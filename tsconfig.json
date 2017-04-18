@@ -1,0 +1,15 @@
+{
+  "version": "2.1",
+  "compilerOptions": {
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "removeComments": true,
+    "listEmittedFiles": true,
+    "importHelpers": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": true
+}
