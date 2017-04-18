@@ -1,0 +1,28 @@
+{
+  "name": "heat-dev-kit",
+  "version": "0.1.0",
+  "description": "Built Real-Time Blockchain applications on HEAT with the HDK",
+  "author": "Heat Ledger Ltd.",
+  "homepage": "http://heatledger.com",
+  "license": "MIT",
+  "main": "gulpfile.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heat-Ledger-Ltd/heat-dev-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Heat-Ledger-Ltd/heat-dev-kit/issues"
+  },
+  "devDependencies": {
+    "del": "2.2.2",
+    "es6-promise": "4.1.0",
+    "gulp": "3.9.1",
+    "gulp-concat": "2.6.1",
+    "gulp-replace": "0.5.4",
+    "gulp-typescript": "3.1.6",
+    "gulp-uglify": "2.1.2",
+    "gulp-usemin": "0.3.28",
+    "tslib": "1.6.0",
+    "typescript": "2.2.2"
+  }
+}
