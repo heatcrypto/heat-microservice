@@ -30,7 +30,7 @@ Through this mechanism HEAT applications can do anything a full-on Java applicat
 * Connect to __any__ type/make of database
 * Connect to __any__ legacy system using __any__ protocol supported by Java
 * Use Java's __superior multi-threading__ support (not available in other JavaScript runtimes)
-* Directly interface with HEAT and have Real-Time instant notifications of __everything__ that happens on the HEAT network
+* Directly interface with HEAT and have __real-time__ instant notifications of __everything__ that happens on the HEAT network
 * Create __any__ type of HEAT transaction
 * Connect to __any__ other HEAT server on the network
 
