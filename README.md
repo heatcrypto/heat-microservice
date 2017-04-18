@@ -1,5 +1,6 @@
 <h1 style="color:red"><b><u>UNDER CONSTRUCTION</u></b></h1>
-<span style="color:red"><b><u>This repository is under active development and in the process of migrating our internally developed version of the HDK to this new public web-home.</u></b></span>
+<span style="color:red"><b><u>This repository is under active development and in the process of migrating 
+our internally developed version of the HDK to this new public web-home.</u></b></span>
 
 <hr>
 
@@ -7,11 +8,38 @@
 
 Built real-time blockchain applications on HEAT with the HDK.
 
-Write your blockchain applications in developer friendly TypeScript, add them to your local HEAT server `scripts` folder and expose your real time application to the world.
+Write your blockchain applications in developer friendly TypeScript, add them to your local HEAT server `scripts` 
+folder and expose your real time application to the world.
+
+### Technology
+
+HEAT is not just a cryptocurrency, HEAT is an application development platform that allows anyone to built blockchain 
+driven real-time applications which are backed by the fast and decentralized HEAT network.
+
+Applications for HEAT are written in [TypeScript](https://www.typescriptlang.org/) (which is a __much better__ type of 
+JavaScript) which are compiled automatically to JavaScript and loaded __into__ HEAT by placing your compiled JavaScript in the `scripts` folder.
+
+When HEAT sees your application it loads it in the [Java embedded JavaScript engine (Nashorn)](https://en.wikipedia.org/wiki/Nashorn_(JavaScript_engine)) 
+which makes your application 'part' of HEAT. 
+
+A side effect of using the Java JavaScript engine is that your code, while coded in TypeScript, basically runs as scripted Java which
+exposes all standard Java classes including all core HEAT Java classes to your application. 
+
+Through this mechanism HEAT applications can do anything a full-on Java application can do, expect with your HEAT application to:
+
+* Connect to __any__ type/make of database
+* Connect to __any__ legacy system using __any__ protocol supported by Java
+* Use Java's __superior multi-threading__ support (not available in other JavaScript runtimes)
+* Directly interface with HEAT and have Real-Time instant notifications of __everything__ that happens on the HEAT network
+* Create __any__ type of HEAT transaction
+* Connect to __any__ other HEAT server on the network
+
+HEAT applications offer the power of Java and the flexibility and overall joy of working with TypeScript. 
 
 # One time setup
 
-To get started writing HEAT applications you need to prepare your development environment, wheter you are developing on Linux, Mac or Windows the steps involved are roughly the same.
+To get started writing HEAT applications you need to prepare your development environment, wheter you are developing on Linux, Mac or 
+Windows the steps involved are roughly the same.
 
 ### Install Visual Studio Code
 
@@ -35,7 +63,8 @@ If you don't have git installed, install it now. Follow the link that matches yo
 
 ### Clone HDK
 
-To write HEAT applications you always start by cloning the HDK. The HDK comes with a collection of base libraries to make writing HEAT applications easier plus a collection of development tools that assist you compile, package and test your HEAT applications.
+To write HEAT applications you always start by cloning the HDK. The HDK comes with a collection of base libraries to make writing HEAT 
+applications easier plus a collection of development tools that assist you compile, package and test your HEAT applications.
 
 To clone the HDK to your local machine we use Git. Do the following to proceed.
 
