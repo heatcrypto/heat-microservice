@@ -61,3 +61,15 @@ If you don't have Node.js and NPM installed, install them now. Follow the link t
 
 [Install Node.js on Linux](https://nodejs.org/en/download/package-manager/)
 
+### Finally.. install developer dependencies
+
+The last stap in our one time setup is to install the developer dependencies, for this we use `npm` which we installed in the previous step.
+
+```
+# first navigate to your local hdk copy
+$ cd heat-dev-kit
+
+# now install all dependencies
+# what dependencies will be installed can be seen in heat-dev-kit/package.json
+$ npm install
+```
