@@ -30,7 +30,7 @@ module subscriber {
   }
 
   class Subscriber {
-    constructor(private serviceId: string) {}
+    constructor(private serviceId: string) { }
 
     public payment() {
       return new PaymentSubscriberBuilder(this.serviceId);
@@ -44,7 +44,7 @@ module subscriber {
 
   abstract class TransactionSubscriberBuilder {
     private serviceId: string;
-    private _account: number = 0;    
+    private _account: number = 0;
     private _sender: number = 0;
     private _recipient: number = 0;
     private _onAdd: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
@@ -62,7 +62,7 @@ module subscriber {
     public account(account: number) {
       this._account = account;
       return this;
-    }    
+    }
 
     public sender(sender: number) {
       this._sender = sender;
@@ -74,25 +74,25 @@ module subscriber {
       return this;
     }
 
-    public onAdd(onAdd: (event:Java.com.heatledger.scripting.NativeTransactionEvent)=>void) {
+    public onAdd(onAdd: (event: Java.com.heatledger.scripting.NativeTransactionEvent) => void) {
       this._onAdd = onAdd;
       return this;
     }
 
-    public onRemove(onRemove: (event:Java.com.heatledger.scripting.NativeTransactionEvent)=>void) {
+    public onRemove(onRemove: (event: Java.com.heatledger.scripting.NativeTransactionEvent) => void) {
       this._onRemove = onRemove;
       return this;
-    }    
+    }
 
-    public onConfirmed(onConfirmed: (event:Java.com.heatledger.scripting.NativeTransactionEvent)=>void) {
+    public onConfirmed(onConfirmed: (event: Java.com.heatledger.scripting.NativeTransactionEvent) => void) {
       this._onConfirmed = onConfirmed;
       return this;
-    }    
+    }
 
     public unconfirmed(unconfirmed: boolean) {
       this._unconfirmed = unconfirmed;
       return this;
-    }    
+    }
 
     public confirmations(confirmations: number) {
       this._confirmations = confirmations;
@@ -117,7 +117,7 @@ module subscriber {
       if (util.isDefined(this._onAdd) || util.isDefined(this._onRemove)) {
         unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
       }
-      return () => unsubscribe.forEach((fn)=>{fn()});
+      return () => unsubscribe.forEach((fn) => { fn() });
     }
 
     private subscribeConfirmed(): Java.java.lang.Runnable {
@@ -145,12 +145,12 @@ module subscriber {
 
         /* Register a listener for when the number of confirmations is reached */
         heat.transactionStore.registerConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
-        unsubscribe.push(()=>{
+        unsubscribe.push(() => {
           heat.transactionStore.unRegisterConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
         });
       };
       unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, this._recipient, this._unconfirmed, add, null));
-      return () => unsubscribe.forEach((fn)=>{fn()});
+      return () => unsubscribe.forEach((fn) => { fn() });
     }
 
     public get(transactionId: number, key: string): string {
@@ -162,9 +162,9 @@ module subscriber {
     }
   }
 
-  class PaymentSubscriberBuilder extends TransactionSubscriberBuilder{
-    constructor(id) { 
-      super(id) 
+  class PaymentSubscriberBuilder extends TransactionSubscriberBuilder {
+    constructor(id) {
+      super(id)
     }
     public subscribe() {
       this.type(0);
@@ -173,9 +173,9 @@ module subscriber {
     }
   }
 
-  class AssetTransferSubscriberBuilder extends TransactionSubscriberBuilder{
-    constructor(id) { 
-      super(id) 
+  class AssetTransferSubscriberBuilder extends TransactionSubscriberBuilder {
+    constructor(id) {
+      super(id)
     }
     public subscribe() {
       this.type(2);
