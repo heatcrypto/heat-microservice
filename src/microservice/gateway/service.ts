@@ -84,7 +84,7 @@ module microservice.gateway {
 
       /* Now we are ready to send our btc payment, we send 1 BTC for each 1 BTC asset received */
       var attachment: Java.com.heatledger.Attachment.ColoredCoinsAssetTransfer = <any> transaction.attachment;
-      var response = this.sendBTC(btc_address, attachment.quantity);
+      var response = this.sendBTC(btc_address, quantity);
 
       /* Store the bitcoin transaction id and timestamp, without any error checking to keep this
          example lean. A more complex sample would of course include error checking and a more
