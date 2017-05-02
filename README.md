@@ -102,3 +102,18 @@ $ cd heat-dev-kit
 # what dependencies will be installed can be seen in heat-dev-kit/package.json
 $ npm install
 ```
+
+# Creating your first microservice
+
+Please see https://github.com/Heat-Ledger-Ltd/heat-dev-kit/blob/master/src/microservice/gateway/service.ts for an actual working **ASSET to BITCOIN gateway microservice** in just 22 lines of effective TypeScript (lots of comments there to explain things).
+
+Steps completed so far:
+
+1. Automatic Java class to TypeScript generation (strong typing for all heat java classes and most java standard lib classes)
+2. Java Nashorn sourcemap support built-in to heat server
+3. Visual Studio Code test run integration (run your microservice from within vscode, includes clickable stacktraces on Nashorn errors)
+4. Heat command line interface for running microservice (tests)
+5. Microservice client framework
+6. Gulp build pipeline which does your typescript compilation, sourcemap generation and runs heat server to execute tests
+
+Next: Documentation. Stay tuned.
