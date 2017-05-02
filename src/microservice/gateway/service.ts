@@ -21,7 +21,7 @@
  * SOFTWARE.
  * */
 module microservice.gateway {
-  
+
   /* These are the user configurations that are passed to this micro service */
   interface GatewayServiceSettings {
 
@@ -37,9 +37,9 @@ module microservice.gateway {
 
   @MicroService('gateway.service')
   class GatewayService extends AbstractMicroService<GatewayServiceSettings> {
-    
+
     private subscriber = subscriber.create('gateway.service.btc').assetTransfer();
-    
+
     constructor(config: Config) {
       super(config);
 
@@ -53,12 +53,12 @@ module microservice.gateway {
           - with 10 confirmations
           - only for transfers not marked COMPLETE */
       this.subscriber.recipient(heat_account)
-                     .confirmations(10)
-                     .onConfirmed((event) => {
-                       this.onAssetTransfer(event.transaction);
-                     })
-                     .subscribe();
-    }    
+        .confirmations(10)
+        .onConfirmed((event) => {
+          this.onAssetTransfer(event.transaction);
+        })
+        .subscribe();
+    }
 
     /**
      * The asset transfer has 10 confirmations and was not marked COMPLETE which means
@@ -69,7 +69,7 @@ module microservice.gateway {
      * @param transaction 
      */
     private onAssetTransfer(transaction: Java.com.heatledger.Transaction) {
-    
+
       /* The bitcoin address is provided as an encrypted message attachment to the asset transfer */
       var btc_address = util.decryptEncryptedMessage(transaction, this.settings.heat_secret_phrase);
 
@@ -83,15 +83,15 @@ module microservice.gateway {
       var quantity = attachment.quantity - (attachment.quantity * .0025);
 
       /* Now we are ready to send our btc payment, we send 1 BTC for each 1 BTC asset received */
-      var attachment: Java.com.heatledger.Attachment.ColoredCoinsAssetTransfer = <any> transaction.attachment;
-      var response = this.sendBTC(btc_address, attachment.quantity);
+      var attachment: Java.com.heatledger.Attachment.ColoredCoinsAssetTransfer = <any>transaction.attachment;
+      var response = this.sendBTC(btc_address, quantity);
 
       /* Store the bitcoin transaction id and timestamp, without any error checking to keep this
          example lean. A more complex sample would of course include error checking and a more
          complex control flow to deal with such issues. */
       this.subscriber.put(transaction.id, 'BTC.TRANSACTION.ID', response.transactionId);
       this.subscriber.put(transaction.id, 'BTC.TRANSACTION.TIMESTAMP', response.transactionTimestamp);
-  }
+    }
 
     private sendBTC(btc_recipient: string, btc_amount: number) {
       var microtx = {
@@ -99,7 +99,7 @@ module microservice.gateway {
         to_address: btc_recipient,
         value_satoshis: btc_amount
       };
-      var url = 'https://api.blockcypher.com/v1/bcy/test/txs/micro?token='+this.settings.btc_token;
+      var url = 'https://api.blockcypher.com/v1/bcy/test/txs/micro?token=' + this.settings.btc_token;
       return JSON.parse(heat.createHTTPClient().post(url, JSON.stringify(microtx)));
     }
   }
