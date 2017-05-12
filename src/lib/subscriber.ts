@@ -39,19 +39,34 @@ module subscriber {
     public assetTransfer() {
       return new AssetTransferSubscriberBuilder(this.serviceId);
     }
+
+    public message() {
+      return new MessageSubscriberBuilder(this.serviceId);
+    }
+
+    public order() {
+      return new OrderSubscriberBuilder(this.serviceId);
+    }
+
+    public trade() {
+      return new TradeSubscriberBuilder(this.serviceId);
+    }
+
+    public block() {
+      return new BlockSubscriberBuilder(this.serviceId);
+    }
   }
 
-
-  abstract class TransactionSubscriberBuilder {
+  class TransactionNoRecipientSubscriberBuilder {
     private serviceId: string;
-    private _account: number = 0;
+    protected _account: number = 0;
     private _sender: number = 0;
-    private _recipient: number = 0;
+    protected _recipient: number = 0;
     private _onAdd: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _onRemove: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _onConfirmed: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _unconfirmed: boolean = false;
-    private _confirmations: number = 0;
+    private _confirmations: number;
     private _type: number;
     private _subtype: number;
 
@@ -59,18 +74,8 @@ module subscriber {
       this.serviceId = serviceId;
     }
 
-    public account(account: number) {
-      this._account = account;
-      return this;
-    }
-
     public sender(sender: number) {
       this._sender = sender;
-      return this;
-    }
-
-    public recipient(recipient: number) {
-      this._recipient = recipient;
       return this;
     }
 
@@ -112,10 +117,14 @@ module subscriber {
     public subscribe() {
       var unsubscribe: Array<Java.java.lang.Runnable> = [];
       if (util.isDefined(this._onConfirmed)) {
+        if (!util.isDefined(this._confirmations)) {
+          throw new Error("You must set 'confirmations' on a builder when using 'onComplete'");
+        }
         unsubscribe.push(this.subscribeConfirmed());
       }
       if (util.isDefined(this._onAdd) || util.isDefined(this._onRemove)) {
-        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
+        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, 
+            this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
       }
       return () => unsubscribe.forEach((fn) => { fn() });
     }
@@ -128,14 +137,14 @@ module subscriber {
         heat.transactionStore.addTransaction(this.serviceId, event.transaction);
 
         /* Determine if this invocation was completed already, if so exit */
-        if (this.get(event.transaction.id, COMPLETE) == TRUE) {
+        if (heat.transactionStore.getEntryValue(this.serviceId, event.transaction.id, COMPLETE) == TRUE) {
           return;
         }
 
         var onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
 
           /* Determine if this invocation was completed already, if so exit */
-          if (this.get(event.transaction.id, COMPLETE) == TRUE) {
+          if (heat.transactionStore.getEntryValue(this.serviceId, event.transaction.id, COMPLETE) == TRUE) {
             return;
           }
 
@@ -152,13 +161,18 @@ module subscriber {
       unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, this._recipient, this._unconfirmed, add, null));
       return () => unsubscribe.forEach((fn) => { fn() });
     }
+  }
 
-    public get(transactionId: number, key: string): string {
-      return heat.transactionStore.getEntryValue(this.serviceId, transactionId, key);
+  abstract class TransactionSubscriberBuilder extends TransactionNoRecipientSubscriberBuilder {
+
+    public account(account: number) {
+      this._account = account;
+      return this;
     }
 
-    public put(transactionId: number, key: string, value: string) {
-      return heat.transactionStore.setEntryValue(this.serviceId, transactionId, key, value);
+    public recipient(recipient: number) {
+      this._recipient = recipient;
+      return this;
     }
   }
 
@@ -184,4 +198,179 @@ module subscriber {
     }
   }
 
+  class MessageSubscriberBuilder extends TransactionSubscriberBuilder {
+    constructor(id) {
+      super(id)
+    }
+    public subscribe() {
+      this.type(1);
+      this.subtype(0);
+      return super.subscribe();
+    }
+  }
+
+  class OrderSubscriberBuilder {
+    private serviceId: string;
+    private _account: number = 0;
+    private _onCreate: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeOrderEvent> = null;
+    private _onUpdate: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeOrderEvent> = null;
+    private _onDelete: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeOrderEvent> = null;
+    private _unconfirmed: boolean = false;
+    private _currency: number;
+    private _asset: number;
+    private _excludeAskOrders: boolean = false;
+    private _excludeBidOrders: boolean = false;
+
+    constructor(serviceId: string) {
+      this.serviceId = serviceId;
+    }
+
+    public account(account: number) {
+      this._account = account;
+      return this;
+    }
+    
+    public currency(currency: number) {
+      this._currency = currency;
+      return this;
+    }
+    
+    public asset(asset: number) {
+      this._asset = asset;
+      return this;
+    }
+
+    public excludeAskOrders(excludeAskOrders: boolean) {
+      this._excludeAskOrders = excludeAskOrders;
+      return this;
+    }
+
+    public excludeBidOrders(excludeBidOrders: boolean) {
+      this._excludeBidOrders = excludeBidOrders;
+      return this;
+    }
+
+    public onCreate(onCreate: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeOrderEvent>) {
+      this._onCreate = onCreate;
+      return this;
+    }
+
+    public onUpdate(onUpdate: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeOrderEvent>) {
+      this._onUpdate = onUpdate;
+      return this;
+    }
+
+    public onDelete(onDelete: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeOrderEvent>) {
+      this._onDelete = onDelete;
+      return this;
+    }
+
+    public unconfirmed(unconfirmed: boolean) {
+      this._unconfirmed = unconfirmed;
+      return this;
+    }
+
+    public subscribe() {
+      let market = null;
+      if (util.isDefined(this._currency) && util.isDefined(this._asset)) {
+        market = heat.newMarket(this._currency, this._asset);
+      }
+      var unsubscribe: Array<Java.java.lang.Runnable> = [];
+      if (!this._excludeAskOrders) {
+        unsubscribe.push(heat.events.subscribeAskOrder(market, this._account, this._unconfirmed, this._onCreate, this._onUpdate, this._onDelete));
+      }
+      if (!this._excludeBidOrders) {
+        unsubscribe.push(heat.events.subscribeBidOrder(market, this._account, this._unconfirmed, this._onCreate, this._onUpdate, this._onDelete));
+      }
+      return () => unsubscribe.forEach((fn)=>fn());
+    }
+  }
+
+  class TradeSubscriberBuilder {
+    private serviceId: string;
+    private _currency: number;
+    private _asset: number;
+    private _account: number = 0;
+    private _buyer: number = 0;
+    private _seller: number = 0;
+    private _unconfirmed: boolean = false;
+    private _onAdd: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTradeEvent> = null;
+
+    constructor(serviceId: string) {
+      this.serviceId = serviceId;
+    }
+
+    public currency(currency: number) {
+      this._currency = currency;
+      return this;
+    }
+
+    public asset(asset: number) {
+      this._asset = asset;
+      return this;
+    }
+
+    public account(account: number) {
+      this._account = account;
+      return this;
+    }
+
+    public buyer(buyer: number) {
+      this._buyer = buyer;
+      return this;
+    }
+
+    public seller(seller: number) {
+      this._seller = seller;
+      return this;
+    }
+
+    public unconfirmed(unconfirmed: boolean) {
+      this._unconfirmed = unconfirmed;
+      return this;
+    }
+
+    public onAdd(onAdd: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTradeEvent>) {
+      this._onAdd = onAdd;
+      return this;
+    }
+
+    public subscribe() {
+      let market = null;
+      if (util.isDefined(this._currency) && util.isDefined(this._asset)) {
+        market = heat.newMarket(this._currency, this._asset);
+      }
+      return heat.events.subscribeTrade(market, this._account, this._buyer, this._seller, this._unconfirmed, this._onAdd);
+    }
+  }
+
+  class BlockSubscriberBuilder {
+    private serviceId: string;
+    private _generator: number = 0;
+    private _onPush: Java.java.util._function.Consumer<Java.com.heatledger.Block> = null;
+    private _onPop: Java.java.util._function.Consumer<Java.com.heatledger.Block> = null;
+
+    constructor(serviceId: string) {
+      this.serviceId = serviceId;
+    }
+
+    public generator(generator: number) {
+      this._generator = generator;
+      return this;
+    }
+
+    public onPush(onPush: Java.java.util._function.Consumer<Java.com.heatledger.Block>) {
+      this._onPush = onPush;
+      return this;
+    }
+
+    public onPop(onPop: Java.java.util._function.Consumer<Java.com.heatledger.Block>) {
+      this._onPop = onPop;
+      return this;
+    }
+
+    public subscribe() {
+      return heat.events.subscribeBlock(this._generator, this._onPop, this._onPush);
+    }
+  }
 }
