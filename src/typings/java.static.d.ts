@@ -26,6 +26,7 @@ declare namespace Java {
   namespace java.lang {
     export interface Long {
       parseUnsignedLong(s: string): number;
+      parseLong(s: string): number;
       toUnsignedString(i: number): string;
       /**
        * Compares two {@code long} values numerically.
@@ -57,6 +58,56 @@ declare namespace Java {
   namespace com.heatledger {
     export interface Account {
       getId(publicKey: Array<number>): number;
+    }
+    export interface Constants {
+        isOffline: boolean;
+        isSilent: boolean;
+        BLOCK_TIME_IN_SECONDS: number;
+        MAX_UPWARD_TIME_DEVIATION: number;
+        MAX_DOWNWARD_TIME_DEVIATION: number;
+        BASE_TARGET_GAMMA: number;
+        MAX_NUMBER_OF_TRANSACTIONS: number;
+        MAX_UNCONFIRMED_TRANSACTIONS: number;
+        MAX_TRANSACTION_SIZE: number;
+        MAX_PAYLOAD_LENGTH: number;    
+        ONE_HEAT: number;
+        MIN_FORGING_BALANCE_HQT: number;
+        MIN_LEASE_PERIOD: number;
+        MAX_LEASE_PERIOD: number;
+        MAX_API_RECORDS: number;
+        MAX_ROLLBACK: number;
+        ENABLE_POP_AT_BLOCK: number;
+        MAX_TIMEDRIFT: number;
+        FORGING_DELAY: number;
+        FORGING_SPEEDUP: number;
+        MAX_ARBITRARY_MESSAGE_LENGTH: number;
+        MAX_ENCRYPTED_MESSAGE_LENGTH: number;
+        MAX_ASSET_QUANTITY_QNT: number;
+        MAX_ASSET_DESCRIPTION_URL_LENGTH: number;
+        MIN_ORDER_EXPIRATION: number;
+        MAX_ORDER_EXPIRATION: number;
+        MIN_ACCOUNT_FULLNAME_LENGTH: number;
+        MAX_ACCOUNT_FULLNAME_LENGTH: number;        
+    }
+    export interface Fee {
+        ARBITRARY_MESSAGE_FEE: Fee;
+        ORDINARY_PAYMENT_FEE: Fee;
+        EFFECTIVE_BALANCE_LEASING_FEE: Fee;
+        ORDER_CANCELLATION_FEE: Fee;
+        ORDER_PLACEMENT_FEE: Fee;
+        ASSET_TRANSFER_FEE: Fee;
+        ASSET_ISSUE_MORE_FEE: Fee;
+        ASSET_ISSUANCE_FEE: Fee;
+        PRIVATE_NAME_ANNOUNCEMENT_APPENDIX_FEE: Fee;
+        PRIVATE_NAME_ASSIGNEMENT_APPENDIX_FEE: Fee;
+        PUBLIC_NAME_ANNOUNCEMENT_APPENDIX_FEE: Fee;
+        PUBLIC_NAME_ASSIGNEMENT_APPENDIX_FEE: Fee;
+        PUBLICKEY_ANNOUNCEMENT_APPENDIX_FEE: Fee;
+        
+        getFee(transaction: Transaction, appendage: Appendix): number;    
+    }
+    export interface Heat {
+        getEpochTime(): number;
     }
   }
   namespace com.heatledger.crypto {
@@ -118,6 +169,13 @@ declare namespace Java {
       quantityQNT: number;
       price: number;
       expiration: number;
+    }
+  }
+  namespace com.heatledger.crypto {
+    export interface EncryptedData {
+      encrypt(plaintext: Array<number>, myPrivateKey: Array<number>, theirPublicKey: Array<number>): EncryptedData;
+      readEncryptedData(buffer: Java.java.nio.ByteBuffer, length: number, maxLength: number): EncryptedData;
+      readEncryptedData(buffer: Java.java.nio.ByteBuffer, length: number, maxLength: number, nonce: number): EncryptedData;
     }
   }
 }
