@@ -27,12 +27,6 @@
    java.heatledger.interfaces.d.ts */
 
 declare namespace Java {
-  namespace java.util._function {
-    export interface Consumer<T> {
-      (arg0: T): void;
-    }
-  }
-
   namespace com.heatledger.scripting.BlockchainEventSubscriber {
     export interface Unregister extends java.lang.Runnable {
     }
@@ -48,5 +42,11 @@ declare namespace Java {
     export interface BiConsumer<T, U> {
       (arg0: T, arg1: U): void;
     }
+    export interface Consumer<T> {
+      (arg0: T): void;
+    }
+    export interface Function<T, R> {
+      (arg0: T): R;
+    }    
   }
 }
