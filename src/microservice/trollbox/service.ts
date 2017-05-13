@@ -121,7 +121,6 @@ module microservice.trollbox {
 
     /* notify websocket listeners, we send a TrollboxServiceMessage to connected clients */
     private notifyWebsocketListeners(event: integrations.slack.SlackMessageEvent) {
-      console.log("NOTIFY websocket, event="+JSON.stringify(event));
       let message: TrollboxServiceMessage = this.decodeMessage(event.text) || ({
         text: event.text,
         username: event.user
