@@ -34,6 +34,7 @@ module microservice.trollbox {
 
   @MicroService('trollbox.service')
   export class TrollboxService {
+    private MAX_MESSAGES = 50;
 
     /* @see integrations/slack/SlackHook for how the actual calls to slack API are done */
     private slackHook: integrations.slack.SlackHook;
@@ -51,7 +52,9 @@ module microservice.trollbox {
       /* Only on startup do we one time load the most recent messages from the #trollbox channel */
       let history = this.slackHook.channelHistory(config.channel);
       if (util.isArray(history)) {
-        this.events = history.reverse();
+        history.reverse().forEach(event=> {
+          this.addMessageEvent(event);
+        });
       }
     }
 
@@ -85,12 +88,6 @@ module microservice.trollbox {
      */
     @Api('GET', 'trollbox/messages')
     public getMessages() {
-      console.log("GET MESSAGES");
-      try {
-        heat.websocket.send({'microservice':'trollbox.service'}, {});
-      } catch (e) {
-        console.log(e);
-      }
       return JSON.stringify(
         this.events.map(event => {
           let message = this.decodeMessage(event.text);
@@ -116,7 +113,7 @@ module microservice.trollbox {
       if (payload.type == 'event_callback') {   /* message to slack channel */
         let event = payload.event;
         if (event.type == 'message' && event.channel == this.config.channel) {
-          this.events.push(event);
+          this.addMessageEvent(event);
           this.notifyWebsocketListeners(event);
         }
       }
@@ -139,8 +136,13 @@ module microservice.trollbox {
 
     /* Parse encoded message or return null in case message does not include `username says:` (limitation of slack) */
     private decodeMessage(text: string): TrollboxServiceMessage {
-      let parts = text.match(/\*(.*)\*\ssays:\s(.*)/);
-      return parts ? { username: parts[1], text: parts[2] } : null;
+      try {
+        let parts = text.match(/^\*(.*)\*\ssays:\s([\s\S]*)/);
+        return parts ? { username: parts[1], text: parts[2] } : null;
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
     }
 
     /* Validates the signature and transforms the publicKey to a numeric id */
@@ -150,6 +152,13 @@ module microservice.trollbox {
       let publicKeyBytes = Convert.parseHexString(publicKey);
       if (Crypto2.verify(signatureBytes, messageBytes, publicKeyBytes)) {
         return Long.toUnsignedString(Account.getId(publicKeyBytes));
+      }
+    }
+
+    private addMessageEvent(event:integrations.slack.SlackMessageEvent) {
+      this.events.push(event);
+      if (this.events.length > this.MAX_MESSAGES) {
+        this.events = this.events.slice(this.events.length - this.MAX_MESSAGES, this.MAX_MESSAGES);
       }
     }
   }
