@@ -171,7 +171,7 @@ gulp.task('test', ['build'], function (cb) {
   
   var scriptsDir = path.join(__dirname, 'dist');
   var isWin = /^win/.test(process.platform);
-  var heatbin = isWin ? "bin\heatledger.bat" : "bin/heatledger";
+  var heatbin = isWin ? "bin/heatledger.bat" : "bin/heatledger";
   var heatdir = (heatledger&&heatledger.dir) || argv.heatdir;
   var sourcedir = path.join(__dirname, 'src');
   var args = ["-path", scriptsDir, "-run", argv.run, "-sourcedir", sourcedir, "-properties", properties];
