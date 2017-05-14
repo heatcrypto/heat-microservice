@@ -21,7 +21,7 @@
  * SOFTWARE.
  * */
 declare var heat: Java.com.heatledger.scripting.ScriptGlobalBinding;
-// Generated using typescript-generator version 1.24-SNAPSHOT on 2017-05-12 11:39:50.
+// Generated using typescript-generator version 1.24-SNAPSHOT on 2017-05-14 16:44:10.
 
 declare namespace Java {
 
@@ -43,57 +43,57 @@ declare namespace Java {
       version: string;
       websocket: com.heatledger.websocket.MicroServiceWebSocket;
 
-      getAskOrder(orderId: number): com.heatledger.Order.Ask;
-
-      newMarket(currencyId: number, assetId: number): com.heatledger.scripting.NativeMarket;
-
-      fastForwardTime(count: number): void;
-
-      getAsset(assetId: number): com.heatledger.Asset;
-
-      getAccount(publicKey: any): com.heatledger.Account;
-
-      getAccount(id: number): com.heatledger.Account;
-
-      getWebsocket(): com.heatledger.websocket.MicroServiceWebSocket;
-
-      getAccountId(publicKey: any): number;
-
-      getAccountByName(fullNameUTF8: string): com.heatledger.Account;
-
-      getAccountByName(accountNameHash: number): com.heatledger.Account;
+      getEpochtime(): number;
 
       getBlockchainProcessor(): com.heatledger.BlockchainProcessor;
 
-      getTransactionStore(): com.heatledger.scripting.TransactionStore;
+      getApplication(): string;
+
+      getTransactionProcessor(): com.heatledger.TransactionProcessor;
 
       getAskOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Ask>;
 
-      getBidOrder(orderId: number): com.heatledger.Order.Bid;
-
-      getReplicator(): com.heatledger.scripting.ScriptReplicator;
-
-      getBlockchain(): com.heatledger.Blockchain;
-
-      getEpochtime(): number;
-
-      createHTTPClient(): com.heatledger.scripting.HTTPClient;
-
-      getDriver(): com.heatledger.Driver;
+      getBidOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Bid>;
 
       newTransactionBuilder(senderPublicKey: any, amountHQT: number, feeHQT: number, deadline: number, attachment: com.heatledger.Attachment): com.heatledger.Transaction.Builder;
 
-      getEvents(): com.heatledger.scripting.BlockchainEventSubscriber;
+      getAsset(assetId: number): com.heatledger.Asset;
 
-      getBidOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Bid>;
+      getAccountId(publicKey: any): number;
 
-      getApplication(): string;
+      getAccountByName(accountNameHash: number): com.heatledger.Account;
+
+      getAccountByName(fullNameUTF8: string): com.heatledger.Account;
+
+      getTransactionStore(): com.heatledger.scripting.TransactionStore;
+
+      getBlockchain(): com.heatledger.Blockchain;
 
       getPersist(): com.heatledger.persist.Persist;
 
       getSimpleStore(): com.heatledger.persist.SimpleStore;
 
-      getTransactionProcessor(): com.heatledger.TransactionProcessor;
+      getReplicator(): com.heatledger.scripting.ScriptReplicator;
+
+      getAskOrder(orderId: number): com.heatledger.Order.Ask;
+
+      getBidOrder(orderId: number): com.heatledger.Order.Bid;
+
+      getEvents(): com.heatledger.scripting.BlockchainEventSubscriber;
+
+      newMarket(currencyId: number, assetId: number): com.heatledger.scripting.NativeMarket;
+
+      fastForwardTime(count: number): void;
+
+      getDriver(): com.heatledger.Driver;
+
+      getWebsocket(): com.heatledger.websocket.MicroServiceWebSocket;
+
+      getAccount(publicKey: any): com.heatledger.Account;
+
+      getAccount(id: number): com.heatledger.Account;
+
+      createHTTPClient(): com.heatledger.scripting.HTTPClient;
 
       newBundle(): com.heatledger.scripting.NativeBundle;
 
@@ -113,6 +113,14 @@ declare namespace Java {
       height: number;
       lastBlock: com.heatledger.Block;
 
+      getBlocksReversed(from: number, to: number): java.util.Iterator<com.heatledger.Block>;
+
+      getBlocksAfter(blockId: number, limit: number): com.heatledger.Block[];
+
+      getBlockIdAtHeight(height: number): number;
+
+      getLastBlock(): com.heatledger.Block;
+
       getBlockAtHeight(height: number): com.heatledger.Block;
 
       hasBlock(blockId: number): boolean;
@@ -121,19 +129,11 @@ declare namespace Java {
 
       getBlocks(from: number, to: number): java.util.Iterator<com.heatledger.Block>;
 
-      getBlocksReversed(from: number, to: number): java.util.Iterator<com.heatledger.Block>;
-
       getBlockIdsAfter(blockId: number, limit: number): number[];
 
-      getBlocksAfter(blockId: number, limit: number): com.heatledger.Block[];
-
-      getBlockIdAtHeight(height: number): number;
-
-      getLastBlock(): com.heatledger.Block;
+      getHeight(): number;
 
       getBlock(blockId: number): com.heatledger.Block;
-
-      getHeight(): number;
     }
 
   }
@@ -147,6 +147,14 @@ declare namespace Java {
       minRollbackHeight: number;
       scanning: boolean;
 
+      getLastBlockchainFeeder(): com.heatledger.peer.Peer;
+
+      getLastBlockchainFeederHeight(): number;
+
+      isScanning(): boolean;
+
+      getMinRollbackHeight(): number;
+
       processPeerBlock(request: { [index: string]: any }): void;
 
       fullReset(): void;
@@ -156,14 +164,6 @@ declare namespace Java {
       popOffTo(height: number): com.heatledger.Block[];
 
       isApplyingAccept(): boolean;
-
-      getLastBlockchainFeederHeight(): number;
-
-      getMinRollbackHeight(): number;
-
-      isScanning(): boolean;
-
-      getLastBlockchainFeeder(): com.heatledger.peer.Peer;
 
       scan(height: number, validate: boolean): void;
     }
@@ -255,11 +255,11 @@ declare namespace Java {
 
       trace(arg0: org.slf4j.Marker, arg1: string, arg2: any): void;
 
+      trace(arg0: org.slf4j.Marker, arg1: string, arg2: any, arg3: any): void;
+
       trace(arg0: org.slf4j.Marker, arg1: string, arg2: any[]): void;
 
       trace(arg0: org.slf4j.Marker, arg1: string, arg2: java.lang.Throwable): void;
-
-      trace(arg0: org.slf4j.Marker, arg1: string, arg2: any, arg3: any): void;
 
       trace(arg0: string): void;
 
@@ -267,9 +267,57 @@ declare namespace Java {
 
       trace(arg0: string, arg1: any, arg2: any): void;
 
-      isTraceEnabled(): boolean;
+      info(arg0: string, arg1: any[]): void;
+
+      info(arg0: org.slf4j.Marker, arg1: string): void;
+
+      info(arg0: org.slf4j.Marker, arg1: string, arg2: any, arg3: any): void;
+
+      info(arg0: org.slf4j.Marker, arg1: string, arg2: any): void;
+
+      info(arg0: string, arg1: any, arg2: any): void;
+
+      info(arg0: string): void;
+
+      info(arg0: string, arg1: any): void;
+
+      info(arg0: string, arg1: java.lang.Throwable): void;
+
+      info(arg0: org.slf4j.Marker, arg1: string, arg2: java.lang.Throwable): void;
+
+      info(arg0: org.slf4j.Marker, arg1: string, arg2: any[]): void;
+
+      isWarnEnabled(arg0: org.slf4j.Marker): boolean;
+
+      isWarnEnabled(): boolean;
+
+      warn(arg0: string, arg1: any): void;
+
+      warn(arg0: string): void;
+
+      warn(arg0: string, arg1: any[]): void;
+
+      warn(arg0: org.slf4j.Marker, arg1: string): void;
+
+      warn(arg0: org.slf4j.Marker, arg1: string, arg2: any): void;
+
+      warn(arg0: org.slf4j.Marker, arg1: string, arg2: java.lang.Throwable): void;
+
+      warn(arg0: org.slf4j.Marker, arg1: string, arg2: any[]): void;
+
+      warn(arg0: org.slf4j.Marker, arg1: string, arg2: any, arg3: any): void;
+
+      warn(arg0: string, arg1: any, arg2: any): void;
+
+      warn(arg0: string, arg1: java.lang.Throwable): void;
+
+      isErrorEnabled(): boolean;
+
+      isErrorEnabled(arg0: org.slf4j.Marker): boolean;
 
       isTraceEnabled(arg0: org.slf4j.Marker): boolean;
+
+      isTraceEnabled(): boolean;
 
       isDebugEnabled(arg0: org.slf4j.Marker): boolean;
 
@@ -278,54 +326,6 @@ declare namespace Java {
       isInfoEnabled(arg0: org.slf4j.Marker): boolean;
 
       isInfoEnabled(): boolean;
-
-      info(arg0: org.slf4j.Marker, arg1: string, arg2: any): void;
-
-      info(arg0: org.slf4j.Marker, arg1: string, arg2: any, arg3: any): void;
-
-      info(arg0: org.slf4j.Marker, arg1: string): void;
-
-      info(arg0: string): void;
-
-      info(arg0: string, arg1: any): void;
-
-      info(arg0: string, arg1: java.lang.Throwable): void;
-
-      info(arg0: string, arg1: any, arg2: any): void;
-
-      info(arg0: string, arg1: any[]): void;
-
-      info(arg0: org.slf4j.Marker, arg1: string, arg2: any[]): void;
-
-      info(arg0: org.slf4j.Marker, arg1: string, arg2: java.lang.Throwable): void;
-
-      isWarnEnabled(arg0: org.slf4j.Marker): boolean;
-
-      isWarnEnabled(): boolean;
-
-      warn(arg0: string, arg1: any[]): void;
-
-      warn(arg0: string): void;
-
-      warn(arg0: string, arg1: any): void;
-
-      warn(arg0: org.slf4j.Marker, arg1: string, arg2: any): void;
-
-      warn(arg0: org.slf4j.Marker, arg1: string, arg2: any, arg3: any): void;
-
-      warn(arg0: org.slf4j.Marker, arg1: string, arg2: any[]): void;
-
-      warn(arg0: org.slf4j.Marker, arg1: string, arg2: java.lang.Throwable): void;
-
-      warn(arg0: string, arg1: any, arg2: any): void;
-
-      warn(arg0: string, arg1: java.lang.Throwable): void;
-
-      warn(arg0: org.slf4j.Marker, arg1: string): void;
-
-      isErrorEnabled(): boolean;
-
-      isErrorEnabled(arg0: org.slf4j.Marker): boolean;
 
       getName(): string;
 
@@ -387,25 +387,11 @@ declare namespace Java {
 
       getDir(): any;
 
-      accounts(): com.heatledger.persist.AccountMap;
-
-      accountAssets(): com.heatledger.persist.AccountAssetMap;
-
-      peers(): com.heatledger.persist.PeerMap;
-
-      assets(): com.heatledger.persist.AssetMap;
-
-      accountNames(): com.heatledger.persist.AccountNamesMap;
-
       whitelistAccounts(): com.heatledger.persist.WhitelistAccountMap;
 
       whitelistMarkets(): com.heatledger.persist.WhitelistMarketMap;
 
       effectiveBalance(): com.heatledger.persist.EffectiveBalanceMap;
-
-      blocks(): com.heatledger.persist.BlocksStore;
-
-      orders(): com.heatledger.persist.OrderMap;
 
       unconfirmedPool(): com.heatledger.persist.UnconfirmedPool;
 
@@ -419,11 +405,25 @@ declare namespace Java {
 
       rollback(rollbackToHeight: number): void;
 
+      accounts(): com.heatledger.persist.AccountMap;
+
+      accountAssets(): com.heatledger.persist.AccountAssetMap;
+
+      peers(): com.heatledger.persist.PeerMap;
+
+      assets(): com.heatledger.persist.AssetMap;
+
+      accountNames(): com.heatledger.persist.AccountNamesMap;
+
       clearDerived(): void;
 
-      publicKeys(): com.heatledger.persist.PublicKeyMapImproved;
+      orders(): com.heatledger.persist.OrderMap;
+
+      blocks(): com.heatledger.persist.BlocksStore;
 
       getHeight(): number;
+
+      publicKeys(): com.heatledger.persist.PublicKeyMapImproved;
 
       shutdown(): void;
 
@@ -455,8 +455,11 @@ declare namespace Java {
       orderAPI: com.heatledger.replicate.OrderAPI;
       paymentsAPI: com.heatledger.replicate.PaymentsReplicator;
       publicNameAPI: com.heatledger.replicate.PublicNameReplicator;
+      scriptHelper: com.heatledger.replicate.ReplicatorScriptHelper;
       tradeAPI: com.heatledger.replicate.TradeAPI;
       transactionAPI: com.heatledger.replicate.TransactionAPI;
+
+      getScriptHelper(): com.heatledger.replicate.ReplicatorScriptHelper;
 
       getTradeAPI(): com.heatledger.replicate.TradeAPI;
 
@@ -519,19 +522,19 @@ declare namespace Java {
     export interface TransactionProcessor extends com.heatledger.util.Observable<com.heatledger.Transaction[], com.heatledger.TransactionProcessor.Event> {
       allUnconfirmedTransactions: java.util.Iterator<com.heatledger.Transaction>;
 
-      getAllUnconfirmedTransactions(): java.util.Iterator<com.heatledger.Transaction>;
-
-      processPeerTransactions(request: { [index: string]: any }): void;
-
-      parseTransaction(bytes: any): com.heatledger.Transaction;
-
-      parseTransaction(json: { [index: string]: any }): com.heatledger.Transaction;
-
       processLater(transactions: com.heatledger.Transaction[]): void;
+
+      getAllUnconfirmedTransactions(): java.util.Iterator<com.heatledger.Transaction>;
 
       getUnconfirmedTransaction(transactionId: number): com.heatledger.Transaction;
 
       removeLostTransactions(transactions: com.heatledger.TransactionImpl[]): void;
+
+      processPeerTransactions(request: { [index: string]: any }): void;
+
+      parseTransaction(json: { [index: string]: any }): com.heatledger.Transaction;
+
+      parseTransaction(bytes: any): com.heatledger.Transaction;
 
       broadcast(transaction: com.heatledger.Transaction): void;
     }
@@ -545,6 +548,8 @@ declare namespace Java {
       addTransaction(serviceId: string, transaction: com.heatledger.Transaction): void;
 
       setEntryValue(serviceId: string, transactionId: number, entryName: string, entryValue: string): void;
+
+      removeTransaction(serviceId: string, transaction: com.heatledger.Transaction): void;
 
       registerConfirmedListener(transactionId: number, confirmations: number, listener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>): void;
 
@@ -568,13 +573,28 @@ declare namespace Java {
 
   }
 
+  namespace java.util {
+
+    export interface Iterator<E> {
+
+      remove(): void;
+
+      hasNext(): boolean;
+
+      next(): E;
+
+      forEachRemaining(arg0: java.util._function.Consumer<any>): void;
+    }
+
+  }
+
   namespace com.heatledger.Order {
 
     export interface Ask extends com.heatledger.Order {
 
-      getAskOrder(orderId: number): com.heatledger.Order.Ask;
-
       isCurrentlyValid(): boolean;
+
+      getAskOrder(orderId: number): com.heatledger.Order.Ask;
 
       addListener(listener: com.heatledger.util.Listener<com.heatledger.Order.Ask>, eventType: com.heatledger.Order.Event): boolean;
 
@@ -585,15 +605,68 @@ declare namespace Java {
 
   }
 
-  namespace com.heatledger.scripting {
+  namespace com.heatledger.Order {
 
-    export interface NativeMarket {
-      assetId: number;
-      currencyId: number;
+    export interface Bid extends com.heatledger.Order {
 
-      getCurrencyId(): number;
+      isCurrentlyValid(): boolean;
 
-      getAssetId(): number;
+      getBidOrder(orderId: number): com.heatledger.Order.Bid;
+
+      addListener(listener: com.heatledger.util.Listener<com.heatledger.Order.Bid>, eventType: com.heatledger.Order.Event): boolean;
+
+      removeListener(listener: com.heatledger.util.Listener<com.heatledger.Order.Bid>, eventType: com.heatledger.Order.Event): boolean;
+
+      getType(): string;
+    }
+
+  }
+
+  namespace com.heatledger.Transaction {
+
+    export interface Builder {
+
+      recipientId(recipientId: number): com.heatledger.Transaction.Builder;
+
+      encryptedMessage(encryptedMessage: com.heatledger.Appendix.EncryptedMessage): com.heatledger.Transaction.Builder;
+
+      publicKeyAnnouncement(publicKeyAnnouncement: com.heatledger.Appendix.PublicKeyAnnouncement): com.heatledger.Transaction.Builder;
+
+      privateNameAnnouncement(privateNameAnnouncement: com.heatledger.Appendix.PrivateNameAnnouncement): com.heatledger.Transaction.Builder;
+
+      privateNameAssignment(privateNameAssignment: com.heatledger.Appendix.PrivateNameAssignment): com.heatledger.Transaction.Builder;
+
+      publicNameAnnouncement(publicNameAnnouncement: com.heatledger.Appendix.PublicNameAnnouncement): com.heatledger.Transaction.Builder;
+
+      publicNameAssignment(publicNameAssignment: com.heatledger.Appendix.PublicNameAssignment): com.heatledger.Transaction.Builder;
+
+      ecBlockHeight(height: number): com.heatledger.Transaction.Builder;
+
+      ecBlockId(blockId: number): com.heatledger.Transaction.Builder;
+
+      encryptToSelfMessage(encryptToSelfMessage: com.heatledger.Appendix.EncryptToSelfMessage): com.heatledger.Transaction.Builder;
+
+      height(height: number): com.heatledger.Transaction.Builder;
+
+      build(): com.heatledger.Transaction;
+
+      build(secretPhrase: string): com.heatledger.TransactionImpl;
+
+      timestamp(timestamp: number): com.heatledger.Transaction.Builder;
+
+      message(message: com.heatledger.Appendix.Message): com.heatledger.Transaction.Builder;
+    }
+
+  }
+
+  namespace com.heatledger {
+
+    export interface Attachment extends com.heatledger.Appendix {
+      ORDINARY_PAYMENT: com.heatledger.Attachment.EmptyAttachment;
+      ARBITRARY_MESSAGE: com.heatledger.Attachment.EmptyAttachment;
+      transactionType: com.heatledger.TransactionType;
+
+      getTransactionType(): com.heatledger.TransactionType;
     }
 
   }
@@ -610,23 +683,23 @@ declare namespace Java {
       id: number;
       quantityQNT: number;
 
-      getAsset(id: number): com.heatledger.Asset;
-
-      getAccountId(): number;
-
       hasAsset(id: number): boolean;
 
       getDescriptionUrl(): string;
 
       getDescriptionHash(): any;
 
+      getQuantityQNT(): number;
+
+      updateQuantityQNT(quantityQNT: number): void;
+
       getDecimals(): number;
 
       getDillutable(): boolean;
 
-      updateQuantityQNT(quantityQNT: number): void;
+      getAsset(id: number): com.heatledger.Asset;
 
-      getQuantityQNT(): number;
+      getAccountId(): number;
 
       addListener(listener: com.heatledger.util.Listener<com.heatledger.Asset>, eventType: com.heatledger.Asset.Event): boolean;
 
@@ -660,14 +733,6 @@ declare namespace Java {
       publicKey: any;
       unconfirmedBalanceHQT: number;
 
-      getAsset(assetId: number): com.heatledger.Account.AccountAsset;
-
-      getAccount(publicKey: any): com.heatledger.Account;
-
-      getAccount(id: number): com.heatledger.Account;
-
-      getAccountByName(accountName: number): com.heatledger.Account;
-
       getCurrentLeasingHeightFrom(): number;
 
       getCurrentLeasingHeightFrom(bytes: any): number;
@@ -678,27 +743,11 @@ declare namespace Java {
 
       getCurrentLesee(bytes: any): number;
 
+      addToVirtualAssetBalance(assetId: number, quantity: number): void;
+
       getVirtualBalance(accountId: number, assetId: number, unconfirmedBalance: number): number;
 
       addAssetListener(listener: com.heatledger.util.Listener<com.heatledger.Account.AccountAsset>, eventType: com.heatledger.Account.Event): boolean;
-
-      getUnconfirmedBalanceHQT(): number;
-
-      addToUnconfirmedBalanceHQT(amountHQT: number): void;
-
-      getUnconfirmedAssetBalance(assetId: number): number;
-
-      addToUnconfirmedAssetBalance(assetId: number, quantity: number): void;
-
-      addToVirtualAssetBalance(assetId: number, quantity: number): void;
-
-      addToBalanceAndUnconfirmedBalanceHQT(amountHQT: number): void;
-
-      addToAssetBalance(assetId: number, quantity: number): void;
-
-      addToAssetAndUnconfirmedAssetBalance(assetId: number, quantity: number): void;
-
-      addToBalanceHQT(amountHQT: number): void;
 
       removeAssetListener(listener: com.heatledger.util.Listener<com.heatledger.Account.AccountAsset>, eventType: com.heatledger.Account.Event): boolean;
 
@@ -726,15 +775,19 @@ declare namespace Java {
 
       getBalanceHQT(): number;
 
+      getUnconfirmedBalanceHQT(): number;
+
       getEffectiveBalanceHeat(): number;
 
       getLessors(): java.util.Iterator<com.heatledger.Account>;
 
-      getGuaranteedBalanceHQT(numberOfConfirmations: number, currentHeight: number): number;
-
       getGuaranteedBalanceHQT(numberOfConfirmations: number): number;
 
+      getGuaranteedBalanceHQT(numberOfConfirmations: number, currentHeight: number): number;
+
       getAssetBalance(assetId: number): number;
+
+      getUnconfirmedAssetBalance(assetId: number): number;
 
       getCurrentLesseeId(): number;
 
@@ -744,6 +797,26 @@ declare namespace Java {
 
       getNextLeasingHeightTo(): number;
 
+      addToAssetBalance(assetId: number, quantity: number): void;
+
+      addToUnconfirmedAssetBalance(assetId: number, quantity: number): void;
+
+      addToAssetAndUnconfirmedAssetBalance(assetId: number, quantity: number): void;
+
+      addToBalanceHQT(amountHQT: number): void;
+
+      addToUnconfirmedBalanceHQT(amountHQT: number): void;
+
+      addToBalanceAndUnconfirmedBalanceHQT(amountHQT: number): void;
+
+      getAsset(assetId: number): com.heatledger.Account.AccountAsset;
+
+      getAccountByName(accountName: number): com.heatledger.Account;
+
+      getAccount(id: number): com.heatledger.Account;
+
+      getAccount(publicKey: any): com.heatledger.Account;
+
       addListener(listener: com.heatledger.util.Listener<com.heatledger.Account>, eventType: com.heatledger.Account.Event): boolean;
 
       removeListener(listener: com.heatledger.util.Listener<com.heatledger.Account>, eventType: com.heatledger.Account.Event): boolean;
@@ -752,43 +825,24 @@ declare namespace Java {
 
       read(buffer: java.nio.ByteBuffer): void;
 
-      getId(): number;
-
       getId(publicKey: any): number;
+
+      getId(): number;
 
       getPublicKey(): any;
     }
 
   }
 
-  namespace java.util {
+  namespace com.heatledger.scripting {
 
-    export interface Iterator<E> {
+    export interface NativeMarket {
+      assetId: number;
+      currencyId: number;
 
-      remove(): void;
+      getCurrencyId(): number;
 
-      hasNext(): boolean;
-
-      next(): E;
-
-      forEachRemaining(arg0: java.util._function.Consumer<any>): void;
-    }
-
-  }
-
-  namespace com.heatledger.Order {
-
-    export interface Bid extends com.heatledger.Order {
-
-      getBidOrder(orderId: number): com.heatledger.Order.Bid;
-
-      isCurrentlyValid(): boolean;
-
-      addListener(listener: com.heatledger.util.Listener<com.heatledger.Order.Bid>, eventType: com.heatledger.Order.Event): boolean;
-
-      removeListener(listener: com.heatledger.util.Listener<com.heatledger.Order.Bid>, eventType: com.heatledger.Order.Event): boolean;
-
-      getType(): string;
+      getAssetId(): number;
     }
 
   }
@@ -800,55 +854,6 @@ declare namespace Java {
       post(url: string, json: string): string;
 
       get(url: string): string;
-    }
-
-  }
-
-  namespace com.heatledger.Transaction {
-
-    export interface Builder {
-
-      recipientId(recipientId: number): com.heatledger.Transaction.Builder;
-
-      encryptedMessage(encryptedMessage: com.heatledger.Appendix.EncryptedMessage): com.heatledger.Transaction.Builder;
-
-      encryptToSelfMessage(encryptToSelfMessage: com.heatledger.Appendix.EncryptToSelfMessage): com.heatledger.Transaction.Builder;
-
-      publicKeyAnnouncement(publicKeyAnnouncement: com.heatledger.Appendix.PublicKeyAnnouncement): com.heatledger.Transaction.Builder;
-
-      privateNameAnnouncement(privateNameAnnouncement: com.heatledger.Appendix.PrivateNameAnnouncement): com.heatledger.Transaction.Builder;
-
-      privateNameAssignment(privateNameAssignment: com.heatledger.Appendix.PrivateNameAssignment): com.heatledger.Transaction.Builder;
-
-      publicNameAnnouncement(publicNameAnnouncement: com.heatledger.Appendix.PublicNameAnnouncement): com.heatledger.Transaction.Builder;
-
-      publicNameAssignment(publicNameAssignment: com.heatledger.Appendix.PublicNameAssignment): com.heatledger.Transaction.Builder;
-
-      ecBlockHeight(height: number): com.heatledger.Transaction.Builder;
-
-      ecBlockId(blockId: number): com.heatledger.Transaction.Builder;
-
-      height(height: number): com.heatledger.Transaction.Builder;
-
-      build(): com.heatledger.Transaction;
-
-      build(secretPhrase: string): com.heatledger.TransactionImpl;
-
-      timestamp(timestamp: number): com.heatledger.Transaction.Builder;
-
-      message(message: com.heatledger.Appendix.Message): com.heatledger.Transaction.Builder;
-    }
-
-  }
-
-  namespace com.heatledger {
-
-    export interface Attachment extends com.heatledger.Appendix {
-      ORDINARY_PAYMENT: com.heatledger.Attachment.EmptyAttachment;
-      ARBITRARY_MESSAGE: com.heatledger.Attachment.EmptyAttachment;
-      transactionType: com.heatledger.TransactionType;
-
-      getTransactionType(): com.heatledger.TransactionType;
     }
 
   }
@@ -906,21 +911,13 @@ declare namespace Java {
       transactions: com.heatledger.Transaction[];
       version: number;
 
-      getGeneratorId(): number;
-
-      getTransactions(): com.heatledger.Transaction[];
-
-      getJSONObject(): { [index: string]: any };
-
       getStringId(): string;
 
       getNextBlockId(): number;
 
-      getTotalFeeHQT(): number;
-
-      getPayloadHash(): any;
-
       getPayloadLength(): number;
+
+      getTotalFeeHQT(): number;
 
       getGeneratorPublicKey(): any;
 
@@ -930,6 +927,8 @@ declare namespace Java {
 
       getTotalAmountHQT(): number;
 
+      getPayloadHash(): any;
+
       getGenerationSignature(): any;
 
       getBlockSignature(): any;
@@ -938,11 +937,17 @@ declare namespace Java {
 
       getCumulativeDifficulty(): number;
 
+      getGeneratorId(): number;
+
+      getTransactions(): com.heatledger.Transaction[];
+
+      getJSONObject(): { [index: string]: any };
+
+      getHeight(): number;
+
       getTimestamp(): number;
 
       getVersion(): number;
-
-      getHeight(): number;
 
       getBytes(): any;
 
@@ -970,7 +975,15 @@ declare namespace Java {
       weight: number;
       wellKnown: boolean;
 
+      getApplication(): string;
+
+      getAnnouncedAddress(): string;
+
+      getSoftware(): string;
+
       getPeerAddress(): string;
+
+      getHallmark(): com.heatledger.peer.Hallmark;
 
       shareAddress(): boolean;
 
@@ -988,29 +1001,21 @@ declare namespace Java {
 
       getBlacklistingCause(): string;
 
-      getSoftware(): string;
-
-      getAnnouncedAddress(): string;
-
-      getHallmark(): com.heatledger.peer.Hallmark;
-
-      isBlacklisted(): boolean;
+      blacklist(cause: string): void;
 
       blacklist(cause: java.lang.Exception): void;
 
-      blacklist(cause: string): void;
+      isBlacklisted(): boolean;
 
       getPlatform(): string;
-
-      getApplication(): string;
 
       getWeight(): number;
 
       getVersion(): string;
 
-      send(request: org.json.simple.JSONStreamAware): { [index: string]: any };
-
       send(request: org.json.simple.JSONStreamAware, maxResponseSize: number): { [index: string]: any };
+
+      send(request: org.json.simple.JSONStreamAware): { [index: string]: any };
 
       remove(): void;
 
@@ -1058,22 +1063,6 @@ declare namespace Java {
       unsignedBytes: any;
       version: number;
 
-      getRecipientId(): number;
-
-      getSenderId(): number;
-
-      getPublicKeyAnnouncement(): com.heatledger.Appendix.PublicKeyAnnouncement;
-
-      getEncryptedMessage(): com.heatledger.Appendix.EncryptedMessage;
-
-      getSenderPublicKey(): any;
-
-      getBlockId(): number;
-
-      getJSONObject(): { [index: string]: any };
-
-      getStringId(): string;
-
       getBlockTimestamp(): number;
 
       getDeadline(): number;
@@ -1108,21 +1097,37 @@ declare namespace Java {
 
       getSafeIndex(): number;
 
-      getIndex(): number;
+      getStringId(): string;
 
-      getExpiration(): number;
+      getRecipientId(): number;
+
+      getSenderId(): number;
+
+      getPublicKeyAnnouncement(): com.heatledger.Appendix.PublicKeyAnnouncement;
+
+      getEncryptedMessage(): com.heatledger.Appendix.EncryptedMessage;
+
+      getSenderPublicKey(): any;
+
+      getBlockId(): number;
+
+      getJSONObject(): { [index: string]: any };
+
+      getIndex(): number;
 
       sign(secretPhrase: string): void;
 
-      getBlock(): com.heatledger.Block;
+      getHeight(): number;
+
+      getExpiration(): number;
 
       getTimestamp(): number;
 
       validate(): void;
 
-      getVersion(): number;
+      getBlock(): com.heatledger.Block;
 
-      getHeight(): number;
+      getVersion(): number;
 
       getBytes(): any;
 
@@ -1268,218 +1273,10 @@ declare namespace Java {
 
   namespace com.heatledger.persist {
 
-    export interface AccountMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, com.heatledger.Account> {
-
-      dump(): void;
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      rollback(rollbackToHeight: number): void;
-
-      getLessors(accountId: number, height: number): java.util.Iterator<com.heatledger.Account>;
-
-      restorableMapOnPut(key: any, value: any): void;
-
-      dumpVersion(): void;
-
-      dumpVersionAnalysis(): void;
-
-      getLeaseChangingAccounts(height: number): java.util.Iterator<com.heatledger.Account>;
-
-      restorableMapOnRemove(key: any): void;
-
-      dumpRestore(): void;
-
-      forEachUsing(consumer: java.util._function.BiConsumer<number, com.heatledger.Account>): void;
-
-      addListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account>): boolean;
-
-      removeListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account>): boolean;
-
-      get(id: number): com.heatledger.Account;
-
-      count(): number;
-
-      clear(): void;
-
-      trim(trimAtHeight: number): void;
-
-      size(): number;
-
-      delete(account: com.heatledger.Account): void;
-
-      create(): void;
-
-      save(account: com.heatledger.Account): void;
-
-      close(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface AccountAssetMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, com.heatledger.Account.AccountAsset> {
-      accountAssetsSlow: { [index: string]: com.heatledger.Account.AccountAsset[] };
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      rollback(rollbackToHeight: number): void;
-
-      restorableMapOnPut(key: any, value: any): void;
-
-      getAccountAssetsSlow(): { [index: string]: com.heatledger.Account.AccountAsset[] };
-
-      restorableMapOnRemove(key: any): void;
-
-      forEachUsing(consumer: java.util._function.Consumer<com.heatledger.Account.AccountAsset>): void;
-
-      addListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account.AccountAsset>): boolean;
-
-      removeListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account.AccountAsset>): boolean;
-
-      get(account: number, asset: number): com.heatledger.Account.AccountAsset;
-
-      clear(): void;
-
-      trim(trimAtHeight: number): void;
-
-      delete(accountAsset: com.heatledger.Account.AccountAsset): void;
-
-      create(): void;
-
-      save(accountAsset: com.heatledger.Account.AccountAsset): void;
-
-      close(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface PeerMap extends java.io.Closeable, com.heatledger.persist.Transactional {
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      loadPeers(): string[];
-
-      deletePeers(peers: string[]): void;
-
-      addPeers(peers: string[]): void;
-
-      clear(): void;
-
-      create(): void;
-
-      close(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface AssetMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, com.heatledger.Asset> {
-
-      getAsset(id: number): com.heatledger.Asset;
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      rollback(rollbackToHeight: number): void;
-
-      hasAsset(id: number): boolean;
-
-      restorableMapOnPut(key: any, value: any): void;
-
-      restorableMapOnRemove(key: any): void;
-
-      foreachAssetSlow(consumer: java.util._function.Consumer<com.heatledger.Asset>): void;
-
-      addListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Asset>): boolean;
-
-      removeListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Asset>): boolean;
-
-      clear(): void;
-
-      trim(trimAtHeight: number): void;
-
-      create(): void;
-
-      save(asset: com.heatledger.Asset): void;
-
-      close(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface AccountNamesMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, number> {
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      rollback(rollbackToHeight: number): void;
-
-      restorableMapOnPut(key: any, value: any): void;
-
-      restorableMapOnRemove(key: any): void;
-
-      addListener(listener: com.heatledger.persist.PersistListener<number, number>): boolean;
-
-      removeListener(listener: com.heatledger.persist.PersistListener<number, number>): boolean;
-
-      remove(accountName: number): void;
-
-      get(accountName: number): number;
-
-      put(accountName: number, account: number): void;
-
-      count(): number;
-
-      clear(): void;
-
-      trim(trimAtHeight: number): void;
-
-      create(): void;
-
-      close(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
     export interface WhitelistAccountMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned {
 
+      setHeightProvider(heightProvider: com.heatledger.persist.HeightProvider): void;
+
       isInTransaction(): boolean;
 
       beginTransaction(): void;
@@ -1489,8 +1286,6 @@ declare namespace Java {
       rollbackTransaction(): void;
 
       rollback(rollbackToHeight: number): void;
-
-      setHeightProvider(heightProvider: com.heatledger.persist.HeightProvider): void;
 
       allowed(assetId: number, accountId: number): boolean;
 
@@ -1542,6 +1337,10 @@ declare namespace Java {
 
     export interface EffectiveBalanceMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener {
 
+      restorableMapOnPut(key: any, value: any): void;
+
+      restorableMapOnRemove(key: any): void;
+
       isInTransaction(): boolean;
 
       beginTransaction(): void;
@@ -1552,13 +1351,9 @@ declare namespace Java {
 
       rollback(rollbackToHeight: number): void;
 
-      getGuaranteedBalanceHQT(account: number, balanceHQT: number, numberOfConfirmations: number, currentHeight: number): number;
-
       addToGuaranteedBalanceHQT(account: number, amountHQT: number, blockchainHeight: number): void;
 
-      restorableMapOnPut(key: any, value: any): void;
-
-      restorableMapOnRemove(key: any): void;
+      getGuaranteedBalanceHQT(account: number, balanceHQT: number, numberOfConfirmations: number, currentHeight: number): number;
 
       put(accountId: number, addAmountHQT: number, height: number): void;
 
@@ -1575,12 +1370,27 @@ declare namespace Java {
 
   namespace com.heatledger.persist {
 
-    export interface BlocksStore extends java.io.Closeable, com.heatledger.persist.Transactional {
-      allBlocksNonShared: java.util.Iterator<com.heatledger.BlockImpl>;
-      allBlocksShared: java.util.Iterator<com.heatledger.BlockImpl>;
-      blocksFile: com.heatledger.persist.BlocksFile;
+    export interface UnconfirmedPool extends java.io.Closeable, com.heatledger.persist.Transactional, com.heatledger.persist.RestorableMapListener {
+      CONSTANT_VALUE_SIZE: number;
+      expiredTransactions: java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
+      file: any;
+      sortedTransactions: java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
 
-      getBlockAtHeight(height: number): com.heatledger.BlockImpl;
+      dump(writer: java.io.PrintWriter): void;
+
+      dump(): void;
+
+      restorableMapOnPut(key: any, value: any): void;
+
+      restorableMapOnRemove(key: any): void;
+
+      dumpRestore(): void;
+
+      getExpiredTransactions(): java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
+
+      getSortedTransactions(): java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
+
+      hasTransaction(transactionId: number): boolean;
 
       isInTransaction(): boolean;
 
@@ -1590,15 +1400,314 @@ declare namespace Java {
 
       rollbackTransaction(): void;
 
-      hasBlock(blockId: number): boolean;
+      getTransaction(transactionId: number): com.heatledger.UnconfirmedTransaction;
 
-      getAllBlocksShared(): java.util.Iterator<com.heatledger.BlockImpl>;
+      addTransaction(transaction: com.heatledger.UnconfirmedTransaction): void;
 
-      getBlocksAfter(blockId: number, limit: number): com.heatledger.BlockImpl[];
+      removeTransaction(transaction: com.heatledger.Transaction): boolean;
 
-      getBlockIdAtHeight(height: number): number;
+      clear(): void;
 
-      getTransaction(transactionId: number): com.heatledger.Transaction;
+      create(): void;
+
+      close(): void;
+
+      getFile(): any;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface AccountMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, com.heatledger.Account> {
+
+      dump(): void;
+
+      dumpVersion(): void;
+
+      dumpVersionAnalysis(): void;
+
+      getLeaseChangingAccounts(height: number): java.util.Iterator<com.heatledger.Account>;
+
+      restorableMapOnPut(key: any, value: any): void;
+
+      restorableMapOnRemove(key: any): void;
+
+      dumpRestore(): void;
+
+      forEachUsing(consumer: java.util._function.BiConsumer<number, com.heatledger.Account>): void;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      rollback(rollbackToHeight: number): void;
+
+      getLessors(accountId: number, height: number): java.util.Iterator<com.heatledger.Account>;
+
+      addListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account>): boolean;
+
+      removeListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account>): boolean;
+
+      get(id: number): com.heatledger.Account;
+
+      count(): number;
+
+      clear(): void;
+
+      trim(trimAtHeight: number): void;
+
+      size(): number;
+
+      delete(account: com.heatledger.Account): void;
+
+      create(): void;
+
+      save(account: com.heatledger.Account): void;
+
+      close(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface AccountAssetMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, com.heatledger.Account.AccountAsset> {
+      accountAssetsSlow: { [index: string]: com.heatledger.Account.AccountAsset[] };
+
+      getAccountAssetsSlow(): { [index: string]: com.heatledger.Account.AccountAsset[] };
+
+      restorableMapOnPut(key: any, value: any): void;
+
+      restorableMapOnRemove(key: any): void;
+
+      forEachUsing(consumer: java.util._function.Consumer<com.heatledger.Account.AccountAsset>): void;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      rollback(rollbackToHeight: number): void;
+
+      addListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account.AccountAsset>): boolean;
+
+      removeListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Account.AccountAsset>): boolean;
+
+      get(account: number, asset: number): com.heatledger.Account.AccountAsset;
+
+      clear(): void;
+
+      trim(trimAtHeight: number): void;
+
+      delete(accountAsset: com.heatledger.Account.AccountAsset): void;
+
+      create(): void;
+
+      save(accountAsset: com.heatledger.Account.AccountAsset): void;
+
+      close(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface PeerMap extends java.io.Closeable, com.heatledger.persist.Transactional {
+
+      loadPeers(): string[];
+
+      deletePeers(peers: string[]): void;
+
+      addPeers(peers: string[]): void;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      clear(): void;
+
+      create(): void;
+
+      close(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface AssetMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, com.heatledger.Asset> {
+
+      restorableMapOnPut(key: any, value: any): void;
+
+      restorableMapOnRemove(key: any): void;
+
+      foreachAssetSlow(consumer: java.util._function.Consumer<com.heatledger.Asset>): void;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      rollback(rollbackToHeight: number): void;
+
+      hasAsset(id: number): boolean;
+
+      getAsset(id: number): com.heatledger.Asset;
+
+      addListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Asset>): boolean;
+
+      removeListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Asset>): boolean;
+
+      clear(): void;
+
+      trim(trimAtHeight: number): void;
+
+      create(): void;
+
+      save(asset: com.heatledger.Asset): void;
+
+      close(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface AccountNamesMap extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener, com.heatledger.persist.PersistObservable<number, number> {
+
+      restorableMapOnPut(key: any, value: any): void;
+
+      restorableMapOnRemove(key: any): void;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      rollback(rollbackToHeight: number): void;
+
+      addListener(listener: com.heatledger.persist.PersistListener<number, number>): boolean;
+
+      removeListener(listener: com.heatledger.persist.PersistListener<number, number>): boolean;
+
+      remove(accountName: number): void;
+
+      get(accountName: number): number;
+
+      put(accountName: number, account: number): void;
+
+      count(): number;
+
+      clear(): void;
+
+      trim(trimAtHeight: number): void;
+
+      create(): void;
+
+      close(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface OrderMap extends java.io.Closeable, com.heatledger.persist.Transactional, com.heatledger.persist.Versioned {
+
+      addAskListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Ask>): boolean;
+
+      removeAskListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Ask>): boolean;
+
+      addBidListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Bid>): boolean;
+
+      removeBidListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Bid>): boolean;
+
+      dumpAsk(): void;
+
+      dumpBid(): void;
+
+      dumpSortedOrderIds(): void;
+
+      forEachAskOrderSlow(consumer: java.util._function.Consumer<com.heatledger.Order.Ask>): void;
+
+      forEachBidOrderSlow(consumer: java.util._function.Consumer<com.heatledger.Order.Bid>): void;
+
+      getAskOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Ask>;
+
+      getBidOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Bid>;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      rollback(rollbackToHeight: number): void;
+
+      getNextAskOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Ask;
+
+      getNextBidOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Bid;
+
+      removeAsk(currencyId: number, assetId: number, orderId: number): void;
+
+      getNextUnconfirmedAskOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Ask;
+
+      getNextUnconfirmedBidOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Bid;
+
+      getExpiredAskOrders(expiration: number): java.util.Iterator<com.heatledger.Order.Ask>;
+
+      getExpiredBidOrders(expiration: number): java.util.Iterator<com.heatledger.Order.Bid>;
+
+      removeBid(currencyId: number, assetId: number, orderId: number): void;
+
+      resetAskUnconfirmed(orderIds: number[]): void;
+
+      resetBidUnconfirmed(orderIds: number[]): void;
+
+      getAskOrder(id: number): com.heatledger.Order.Ask;
+
+      getBidOrder(id: number): com.heatledger.Order.Bid;
+
+      clear(): void;
+
+      trim(trimAtHeight: number): void;
+
+      create(): void;
+
+      save(bid: com.heatledger.Order.Bid): void;
+
+      save(ask: com.heatledger.Order.Ask): void;
+
+      close(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface BlocksStore extends java.io.Closeable, com.heatledger.persist.Transactional {
+      allBlocksNonShared: java.util.Iterator<com.heatledger.BlockImpl>;
+      allBlocksShared: java.util.Iterator<com.heatledger.BlockImpl>;
+      blocksFile: com.heatledger.persist.BlocksFile;
 
       hasTransaction(transactionId: number): boolean;
 
@@ -1626,6 +1735,26 @@ declare namespace Java {
 
       dumpBlocksRestore(): void;
 
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      getBlocksAfter(blockId: number, limit: number): com.heatledger.BlockImpl[];
+
+      getBlockIdAtHeight(height: number): number;
+
+      getBlockAtHeight(height: number): com.heatledger.BlockImpl;
+
+      hasBlock(blockId: number): boolean;
+
+      getAllBlocksShared(): java.util.Iterator<com.heatledger.BlockImpl>;
+
+      getTransaction(transactionId: number): com.heatledger.Transaction;
+
       getBlock(blockId: number): com.heatledger.BlockImpl;
 
       clear(): void;
@@ -1639,131 +1768,13 @@ declare namespace Java {
 
   namespace com.heatledger.persist {
 
-    export interface OrderMap extends java.io.Closeable, com.heatledger.persist.Transactional, com.heatledger.persist.Versioned {
-
-      getAskOrder(id: number): com.heatledger.Order.Ask;
-
-      getAskOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Ask>;
-
-      getBidOrder(id: number): com.heatledger.Order.Bid;
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      rollback(rollbackToHeight: number): void;
-
-      removeAsk(currencyId: number, assetId: number, orderId: number): void;
-
-      getNextAskOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Ask;
-
-      getNextBidOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Bid;
-
-      getNextUnconfirmedAskOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Ask;
-
-      getNextUnconfirmedBidOrder(pairKey: com.heatledger.persist.OrderPairKey): com.heatledger.Order.Bid;
-
-      getExpiredAskOrders(expiration: number): java.util.Iterator<com.heatledger.Order.Ask>;
-
-      getExpiredBidOrders(expiration: number): java.util.Iterator<com.heatledger.Order.Bid>;
-
-      removeBid(currencyId: number, assetId: number, orderId: number): void;
-
-      resetAskUnconfirmed(orderIds: number[]): void;
-
-      resetBidUnconfirmed(orderIds: number[]): void;
-
-      addAskListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Ask>): boolean;
-
-      removeAskListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Ask>): boolean;
-
-      addBidListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Bid>): boolean;
-
-      removeBidListener(listener: com.heatledger.persist.PersistListener<number, com.heatledger.Order.Bid>): boolean;
-
-      dumpAsk(): void;
-
-      dumpBid(): void;
-
-      dumpSortedOrderIds(): void;
-
-      forEachAskOrderSlow(consumer: java.util._function.Consumer<com.heatledger.Order.Ask>): void;
-
-      forEachBidOrderSlow(consumer: java.util._function.Consumer<com.heatledger.Order.Bid>): void;
-
-      getBidOrders(currencyId: number, assetId: number): java.util.Iterator<com.heatledger.Order.Bid>;
-
-      clear(): void;
-
-      trim(trimAtHeight: number): void;
-
-      create(): void;
-
-      save(bid: com.heatledger.Order.Bid): void;
-
-      save(ask: com.heatledger.Order.Ask): void;
-
-      close(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface UnconfirmedPool extends java.io.Closeable, com.heatledger.persist.Transactional, com.heatledger.persist.RestorableMapListener {
-      CONSTANT_VALUE_SIZE: number;
-      expiredTransactions: java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
-      file: any;
-      sortedTransactions: java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
-
-      dump(writer: java.io.PrintWriter): void;
-
-      dump(): void;
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      addTransaction(transaction: com.heatledger.UnconfirmedTransaction): void;
-
-      getTransaction(transactionId: number): com.heatledger.UnconfirmedTransaction;
+    export interface PublicKeyMapImproved extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener {
 
       restorableMapOnPut(key: any, value: any): void;
 
       restorableMapOnRemove(key: any): void;
 
-      dumpRestore(): void;
-
-      getExpiredTransactions(): java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
-
-      getSortedTransactions(): java.util.Iterator<com.heatledger.UnconfirmedTransaction>;
-
-      removeTransaction(transaction: com.heatledger.Transaction): boolean;
-
-      hasTransaction(transactionId: number): boolean;
-
-      clear(): void;
-
-      create(): void;
-
-      close(): void;
-
-      getFile(): any;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface PublicKeyMapImproved extends com.heatledger.persist.Transactional, java.io.Closeable, com.heatledger.persist.Versioned, com.heatledger.persist.RestorableMapListener {
+      forEachAccountPublicKey(consumer: java.util._function.BiConsumer<number, com.heatledger.AccountPublicKey>): void;
 
       isInTransaction(): boolean;
 
@@ -1776,12 +1787,6 @@ declare namespace Java {
       rollback(rollbackToHeight: number): void;
 
       getAccountPublicKey(id: number): com.heatledger.AccountPublicKey;
-
-      restorableMapOnPut(key: any, value: any): void;
-
-      restorableMapOnRemove(key: any): void;
-
-      forEachAccountPublicKey(consumer: java.util._function.BiConsumer<number, com.heatledger.AccountPublicKey>): void;
 
       has(id: number): boolean;
 
@@ -1850,9 +1855,9 @@ declare namespace Java {
 
     export interface AccountAssetsReplicator extends com.heatledger.replicate.AbstractReplicator, com.heatledger.replicate.AccountAssetsAPI {
 
-      beforeFullRescan(): void;
-
       registerListeners(): void;
+
+      beforeFullRescan(): void;
 
       afterFullRescan(): void;
 
@@ -1869,13 +1874,13 @@ declare namespace Java {
 
     export interface AssetCertificationReplicator extends com.heatledger.replicate.AbstractBundleReplicator<com.heatledger.replicate.AssetCertificationBundle>, com.heatledger.replicate.AssetCertificationAPI {
 
-      beforeFullRescan(): void;
-
-      createBundleMessage(assetId: number, certified: boolean, symbol: string, name: string): any;
-
       registerListeners(): void;
 
+      beforeFullRescan(): void;
+
       afterFullRescan(): void;
+
+      createBundleMessage(assetId: number, certified: boolean, symbol: string, name: string): any;
 
       getValue(assetId: number, certifierAccountId: number): com.heatledger.replicate.AssetCertificationBundle;
     }
@@ -1899,9 +1904,9 @@ declare namespace Java {
 
     export interface AssetProtocol1API {
 
-      getAsset(symbol: string): com.heatledger.replicate.AssetProtocol1;
-
       getAssets(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.replicate.AssetProtocol1>;
+
+      getAsset(symbol: string): com.heatledger.replicate.AssetProtocol1;
     }
 
   }
@@ -1923,9 +1928,9 @@ declare namespace Java {
 
     export interface HistoryReplicator extends com.heatledger.replicate.AbstractReplicator, com.heatledger.replicate.HistoryAPI {
 
-      beforeFullRescan(): void;
-
       registerListeners(): void;
+
+      beforeFullRescan(): void;
 
       afterFullRescan(): void;
 
@@ -1938,9 +1943,9 @@ declare namespace Java {
 
     export interface KeyStoreAPI {
 
-      getKeyCount(accountId: number): number;
-
       createBundleMessage(name: string, value: string): any;
+
+      getKeyCount(accountId: number): number;
 
       getValue(accountId: number, name: string): com.heatledger.replicate.KeyStoreBundle;
 
@@ -1966,9 +1971,9 @@ declare namespace Java {
 
     export interface MessageReplicator extends com.heatledger.replicate.AbstractReplicator, com.heatledger.replicate.MessagesAPI {
 
-      beforeFullRescan(): void;
-
       registerListeners(): void;
+
+      beforeFullRescan(): void;
 
       afterFullRescan(): void;
 
@@ -1985,17 +1990,19 @@ declare namespace Java {
 
     export interface OrderAPI {
 
-      getAskOrder(order: number): com.heatledger.Order.Ask;
-
-      getAskOrders(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Ask>;
-
-      getBidOrder(order: number): com.heatledger.Order.Bid;
-
       getAccountOrdersAll(accountId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order>;
 
       getAccountOrdersAllCount(accountId: number): number;
 
       getAccountOrdersPair(accountId: number, currencyId: number, assetId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order>;
+
+      getBidOrdersByCurrencyAssetCount(currencyId: number, assetId: number): number;
+
+      getBidOrdersByAccountCurrencyAsset(accountId: number, currencyId: number, assetId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Bid>;
+
+      getAskOrderTotal(currencyId: number, assetId: number): number;
+
+      getBidOrderTotal(currencyId: number, assetId: number): number;
 
       getAccountOrdersPairCount(accountId: number, currencyId: number, assetId: number): number;
 
@@ -2009,17 +2016,15 @@ declare namespace Java {
 
       getBidOrdersByCurrencyAsset(currencyId: number, assetId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Bid>;
 
-      getBidOrdersByCurrencyAssetCount(currencyId: number, assetId: number): number;
-
       getAskOrdersByAccountCurrencyAsset(accountId: number, currencyId: number, assetId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Ask>;
 
-      getBidOrdersByAccountCurrencyAsset(accountId: number, currencyId: number, assetId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Bid>;
-
-      getAskOrderTotal(currencyId: number, assetId: number): number;
-
-      getBidOrderTotal(currencyId: number, assetId: number): number;
+      getAskOrders(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Ask>;
 
       getBidOrders(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Order.Bid>;
+
+      getAskOrder(order: number): com.heatledger.Order.Ask;
+
+      getBidOrder(order: number): com.heatledger.Order.Bid;
     }
 
   }
@@ -2028,9 +2033,9 @@ declare namespace Java {
 
     export interface PaymentsReplicator extends com.heatledger.replicate.AbstractReplicator, com.heatledger.replicate.PaymentsAPI {
 
-      beforeFullRescan(): void;
-
       registerListeners(): void;
+
+      beforeFullRescan(): void;
 
       afterFullRescan(): void;
 
@@ -2045,13 +2050,13 @@ declare namespace Java {
 
     export interface PublicNameReplicator extends com.heatledger.replicate.AbstractReplicator, com.heatledger.replicate.PublicNameAPI {
 
-      beforeFullRescan(): void;
+      getAccounts(assignerId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Account>;
 
       registerListeners(): void;
 
-      afterFullRescan(): void;
+      beforeFullRescan(): void;
 
-      getAccounts(assignerId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Account>;
+      afterFullRescan(): void;
 
       search(query: string, assignerId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Account>;
     }
@@ -2060,15 +2065,36 @@ declare namespace Java {
 
   namespace com.heatledger.replicate {
 
+    export interface ReplicatorScriptHelper {
+
+      updateSchema(replicatorId: string, statements: string[]): void;
+
+      setLimits(index: number, pstmt: com.heatledger.replicate.ReplicatorScriptHelper.ScriptablePreparedStatement, from: number, to: number): number;
+
+      limitsClause(from: number, to: number): string;
+
+      preparedStatement(statement: string, consumer: java.util._function.Consumer<com.heatledger.replicate.ReplicatorScriptHelper.ScriptablePreparedStatement>): void;
+
+      resultSetIterator(statement: string, setupPreparedStatement: java.util._function.Consumer<com.heatledger.replicate.ReplicatorScriptHelper.ScriptablePreparedStatement>, translatorFunction: java.util._function.Function<com.heatledger.replicate.ReplicatorScriptHelper.ScriptableResultSet, any>, iteratorFunction: java.util._function.Consumer<java.util.Iterator<any>>): void;
+
+      batchUpdate(updateStatements: string[]): void;
+    }
+
+  }
+
+  namespace com.heatledger.replicate {
+
     export interface TradeAPI {
 
-      getTrade(askOrderId: number, bidOrderId: number): com.heatledger.Trade;
+      getTradeMarketInfo(currencyId: number, assetId: number): com.heatledger.replicate.TradeAPI.TradeMarketInfo;
 
-      getAccountTrades(accountId: number, propertiesAccountId: number, propertiesProtocol: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Trade>;
+      getAllTrades(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Trade>;
 
       getCurrencyAssetTrades(currencyId: number, assetId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Trade>;
 
       getCurrencyAssetsTradesCount(currencyId: number, assetId: number): number;
+
+      getAccountTrades(accountId: number, propertiesAccountId: number, propertiesProtocol: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Trade>;
 
       getAccountTradesCount(accountId: number): number;
 
@@ -2088,9 +2114,7 @@ declare namespace Java {
 
       getTradePairs(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.replicate.TradePair>;
 
-      getTradeMarketInfo(currencyId: number, assetId: number): com.heatledger.replicate.TradeAPI.TradeMarketInfo;
-
-      getAllTrades(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Trade>;
+      getTrade(askOrderId: number, bidOrderId: number): com.heatledger.Trade;
     }
 
   }
@@ -2099,8 +2123,6 @@ declare namespace Java {
 
     export interface TransactionAPI {
       transactionsCount: number;
-
-      getTransactions(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Transaction>;
 
       getTransactionsForAccount(accountId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Transaction>;
 
@@ -2111,6 +2133,8 @@ declare namespace Java {
       getTransactionsForBlockCount(blockId: number): number;
 
       getTransactionsCount(): number;
+
+      getTransactions(from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Transaction>;
     }
 
   }
@@ -2121,29 +2145,13 @@ declare namespace Java {
       senderPublicKeyApplied: boolean;
       size: number;
 
+      setHeight(height: number): void;
+
       isSenderPublicKeyApplied(): boolean;
 
       createFromBuffer(buffer: java.nio.ByteBuffer): com.heatledger.TransactionImpl;
 
       isAccountNameDuplicate(accountNameDuplicates: { [index: string]: number }): boolean;
-
-      parseTransaction(buffer: java.nio.ByteBuffer): com.heatledger.TransactionImpl;
-
-      getRecipientId(): number;
-
-      getSenderId(): number;
-
-      getPublicKeyAnnouncement(): com.heatledger.Appendix.PublicKeyAnnouncement;
-
-      getEncryptedMessage(): com.heatledger.Appendix.EncryptedMessage;
-
-      getSenderPublicKey(): any;
-
-      getBlockId(): number;
-
-      getJSONObject(): { [index: string]: any };
-
-      getStringId(): string;
 
       getBlockTimestamp(): number;
 
@@ -2179,25 +2187,41 @@ declare namespace Java {
 
       getSafeIndex(): number;
 
-      setHeight(height: number): void;
+      parseTransaction(buffer: java.nio.ByteBuffer): com.heatledger.TransactionImpl;
+
+      getStringId(): string;
+
+      getRecipientId(): number;
+
+      getSenderId(): number;
+
+      getPublicKeyAnnouncement(): com.heatledger.Appendix.PublicKeyAnnouncement;
+
+      getEncryptedMessage(): com.heatledger.Appendix.EncryptedMessage;
+
+      getSenderPublicKey(): any;
+
+      getBlockId(): number;
+
+      getJSONObject(): { [index: string]: any };
 
       getIndex(): number;
 
-      getExpiration(): number;
-
       sign(secretPhrase: string): void;
 
-      getBlock(): com.heatledger.Block;
+      getHeight(): number;
+
+      getExpiration(): number;
 
       getTimestamp(): number;
 
       validate(): void;
 
+      getBlock(): com.heatledger.Block;
+
       bytes(): any;
 
       getVersion(): number;
-
-      getHeight(): number;
 
       equals(o: any): boolean;
 
@@ -2251,13 +2275,9 @@ declare namespace Java {
       unconfirmed: boolean;
       unconfirmedQuantity: number;
 
-      getAccountId(): number;
-
-      isCurrentlyValid(): boolean;
+      getUnconfirmedQuantity(): number;
 
       setCancelled(cancelled: boolean): void;
-
-      getQuantity(): number;
 
       getCancelled(): boolean;
 
@@ -2265,11 +2285,15 @@ declare namespace Java {
 
       getPrice(): number;
 
-      getUnconfirmedQuantity(): number;
-
       getTransactionHeight(): number;
 
       getTransactionIndex(): number;
+
+      getQuantity(): number;
+
+      isCurrentlyValid(): boolean;
+
+      getAccountId(): number;
 
       getUnconfirmed(): boolean;
 
@@ -2277,11 +2301,11 @@ declare namespace Java {
 
       getAssetId(): number;
 
+      getHeight(): number;
+
       getExpiration(): number;
 
       getTimestamp(): number;
-
-      getHeight(): number;
 
       toString(): string;
 
@@ -2290,6 +2314,169 @@ declare namespace Java {
       getId(): number;
 
       getType(): string;
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface EncryptedMessage extends com.heatledger.Appendix.AbstractEncryptedMessage {
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface PublicKeyAnnouncement extends com.heatledger.Appendix.AbstractAppendix {
+      publicKey: any;
+
+      getFee(): com.heatledger.Fee;
+
+      getPublicKey(): any;
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface PrivateNameAnnouncement extends com.heatledger.Appendix.AbstractAppendix {
+      name: number;
+
+      getFee(): com.heatledger.Fee;
+
+      getName(): number;
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface PrivateNameAssignment extends com.heatledger.Appendix.AbstractAppendix {
+      name: number;
+
+      getFee(): com.heatledger.Fee;
+
+      getName(): number;
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface PublicNameAnnouncement extends com.heatledger.Appendix.AbstractAppendix {
+      fullName: any;
+      nameHash: number;
+
+      getNameHash(): number;
+
+      getFee(): com.heatledger.Fee;
+
+      getFullName(): any;
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface PublicNameAssignment extends com.heatledger.Appendix.AbstractAppendix {
+      fullName: any;
+      nameHash: number;
+
+      getNameHash(): number;
+
+      getFee(): com.heatledger.Fee;
+
+      getFullName(): any;
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface EncryptToSelfMessage extends com.heatledger.Appendix.AbstractEncryptedMessage {
+    }
+
+  }
+
+  namespace com.heatledger.Appendix {
+
+    export interface Message extends com.heatledger.Appendix.AbstractAppendix {
+      message: any;
+      text: boolean;
+
+      getFee(): com.heatledger.Fee;
+
+      isText(): boolean;
+
+      getMessage(): any;
+    }
+
+  }
+
+  namespace com.heatledger.Attachment {
+
+    export interface EmptyAttachment extends com.heatledger.Attachment.AbstractAttachment {
+    }
+
+  }
+
+  namespace com.heatledger {
+
+    export interface TransactionType {
+      TYPE_PAYMENT: number;
+      TYPE_MESSAGING: number;
+      TYPE_COLORED_COINS: number;
+      TYPE_ACCOUNT_CONTROL: number;
+      SUBTYPE_PAYMENT_ORDINARY_PAYMENT: number;
+      SUBTYPE_MESSAGING_ARBITRARY_MESSAGE: number;
+      SUBTYPE_COLORED_COINS_ASSET_ISSUANCE: number;
+      SUBTYPE_COLORED_COINS_ASSET_ISSUE_MORE: number;
+      SUBTYPE_COLORED_COINS_ASSET_TRANSFER: number;
+      SUBTYPE_COLORED_COINS_ASK_ORDER_PLACEMENT: number;
+      SUBTYPE_COLORED_COINS_BID_ORDER_PLACEMENT: number;
+      SUBTYPE_COLORED_COINS_ASK_ORDER_CANCELLATION: number;
+      SUBTYPE_COLORED_COINS_BID_ORDER_CANCELLATION: number;
+      SUBTYPE_COLORED_COINS_WHITELIST_ACCOUNT_ADDITION: number;
+      SUBTYPE_COLORED_COINS_WHITELIST_ACCOUNT_REMOVAL: number;
+      SUBTYPE_COLORED_COINS_WHITELIST_MARKET: number;
+      SUBTYPE_ACCOUNT_CONTROL_EFFECTIVE_BALANCE_LEASING: number;
+      subtype: number;
+      type: number;
+
+      canHaveRecipient(): boolean;
+
+      mustHaveRecipient(): boolean;
+
+      findTransactionType(type: number, subtype: number): com.heatledger.TransactionType;
+
+      isUnconfirmedDuplicate(transaction: com.heatledger.Transaction, duplicates: { [index: string]: { [index: string]: boolean } }): boolean;
+
+      getSubtype(): number;
+
+      toString(): string;
+
+      getType(): number;
+    }
+
+  }
+
+  namespace com.heatledger {
+
+    export interface Appendix {
+      JSONObject: { [index: string]: any };
+      fee: com.heatledger.Fee;
+      size: number;
+      version: number;
+
+      putBytes(buffer: java.nio.ByteBuffer): void;
+
+      getJSONObject(): { [index: string]: any };
+
+      getFee(): com.heatledger.Fee;
+
+      getVersion(): number;
+
+      getSize(): number;
     }
 
   }
@@ -2444,15 +2631,15 @@ declare namespace Java {
       quantity: number;
       unconfirmedQuantity: number;
 
-      getAccountId(): number;
+      getUnconfirmedQuantity(): number;
+
+      setQuantity(quantity: number): void;
 
       setUnconfirmedQuantity(unconfirmedQuantity: number): void;
 
       getQuantity(): number;
 
-      getUnconfirmedQuantity(): number;
-
-      setQuantity(quantity: number): void;
+      getAccountId(): number;
 
       getAssetId(): number;
 
@@ -2497,180 +2684,17 @@ declare namespace Java {
       nonce: any;
       size: number;
 
-      readEncryptedData(buffer: java.nio.ByteBuffer, length: number, maxLength: number, nonce: number): com.heatledger.crypto.EncryptedData;
+      getNonce(): any;
 
       readEncryptedData(buffer: java.nio.ByteBuffer, length: number, maxLength: number): com.heatledger.crypto.EncryptedData;
 
-      getNonce(): any;
+      readEncryptedData(buffer: java.nio.ByteBuffer, length: number, maxLength: number, nonce: number): com.heatledger.crypto.EncryptedData;
 
       getData(): any;
 
       encrypt(plaintext: any, myPrivateKey: any, theirPublicKey: any): com.heatledger.crypto.EncryptedData;
 
       decrypt(myPrivateKey: any, theirPublicKey: any): any;
-
-      getSize(): number;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface EncryptedMessage extends com.heatledger.Appendix.AbstractEncryptedMessage {
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface EncryptToSelfMessage extends com.heatledger.Appendix.AbstractEncryptedMessage {
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface PublicKeyAnnouncement extends com.heatledger.Appendix.AbstractAppendix {
-      publicKey: any;
-
-      getFee(): com.heatledger.Fee;
-
-      getPublicKey(): any;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface PrivateNameAnnouncement extends com.heatledger.Appendix.AbstractAppendix {
-      name: number;
-
-      getFee(): com.heatledger.Fee;
-
-      getName(): number;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface PrivateNameAssignment extends com.heatledger.Appendix.AbstractAppendix {
-      name: number;
-
-      getFee(): com.heatledger.Fee;
-
-      getName(): number;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface PublicNameAnnouncement extends com.heatledger.Appendix.AbstractAppendix {
-      fullName: any;
-      nameHash: number;
-
-      getNameHash(): number;
-
-      getFee(): com.heatledger.Fee;
-
-      getFullName(): any;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface PublicNameAssignment extends com.heatledger.Appendix.AbstractAppendix {
-      fullName: any;
-      nameHash: number;
-
-      getNameHash(): number;
-
-      getFee(): com.heatledger.Fee;
-
-      getFullName(): any;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface Message extends com.heatledger.Appendix.AbstractAppendix {
-      message: any;
-      text: boolean;
-
-      getFee(): com.heatledger.Fee;
-
-      isText(): boolean;
-
-      getMessage(): any;
-    }
-
-  }
-
-  namespace com.heatledger.Attachment {
-
-    export interface EmptyAttachment extends com.heatledger.Attachment.AbstractAttachment {
-    }
-
-  }
-
-  namespace com.heatledger {
-
-    export interface TransactionType {
-      TYPE_PAYMENT: number;
-      TYPE_MESSAGING: number;
-      TYPE_COLORED_COINS: number;
-      TYPE_ACCOUNT_CONTROL: number;
-      SUBTYPE_PAYMENT_ORDINARY_PAYMENT: number;
-      SUBTYPE_MESSAGING_ARBITRARY_MESSAGE: number;
-      SUBTYPE_COLORED_COINS_ASSET_ISSUANCE: number;
-      SUBTYPE_COLORED_COINS_ASSET_ISSUE_MORE: number;
-      SUBTYPE_COLORED_COINS_ASSET_TRANSFER: number;
-      SUBTYPE_COLORED_COINS_ASK_ORDER_PLACEMENT: number;
-      SUBTYPE_COLORED_COINS_BID_ORDER_PLACEMENT: number;
-      SUBTYPE_COLORED_COINS_ASK_ORDER_CANCELLATION: number;
-      SUBTYPE_COLORED_COINS_BID_ORDER_CANCELLATION: number;
-      SUBTYPE_COLORED_COINS_WHITELIST_ACCOUNT_ADDITION: number;
-      SUBTYPE_COLORED_COINS_WHITELIST_ACCOUNT_REMOVAL: number;
-      SUBTYPE_COLORED_COINS_WHITELIST_MARKET: number;
-      SUBTYPE_ACCOUNT_CONTROL_EFFECTIVE_BALANCE_LEASING: number;
-      subtype: number;
-      type: number;
-
-      getSubtype(): number;
-
-      isUnconfirmedDuplicate(transaction: com.heatledger.Transaction, duplicates: { [index: string]: { [index: string]: boolean } }): boolean;
-
-      canHaveRecipient(): boolean;
-
-      mustHaveRecipient(): boolean;
-
-      findTransactionType(type: number, subtype: number): com.heatledger.TransactionType;
-
-      toString(): string;
-
-      getType(): number;
-    }
-
-  }
-
-  namespace com.heatledger {
-
-    export interface Appendix {
-      JSONObject: { [index: string]: any };
-      fee: com.heatledger.Fee;
-      size: number;
-      version: number;
-
-      putBytes(buffer: java.nio.ByteBuffer): void;
-
-      getJSONObject(): { [index: string]: any };
-
-      getFee(): com.heatledger.Fee;
-
-      getVersion(): number;
 
       getSize(): number;
     }
@@ -2684,9 +2708,9 @@ declare namespace Java {
       minLength: number;
       name: string;
 
-      getMinLength(): number;
-
       getFingerprint(): string;
+
+      getMinLength(): number;
 
       getName(): string;
 
@@ -2709,8 +2733,6 @@ declare namespace Java {
       valid: boolean;
       weight: number;
 
-      parseDate(dateValue: string): number;
-
       getAccountId(): number;
 
       formatDate(date: number): string;
@@ -2721,11 +2743,13 @@ declare namespace Java {
 
       getHallmarkString(): string;
 
-      getWeight(): number;
+      parseDate(dateValue: string): number;
 
       getDate(): number;
 
       isValid(): boolean;
+
+      getWeight(): number;
 
       getSignature(): any;
 
@@ -2793,27 +2817,17 @@ declare namespace Java {
       sellerId: number;
       timestamp: number;
 
-      getQuantity(): number;
-
       getPrice(): number;
 
-      getCurrencyId(): number;
+      getQuantity(): number;
 
-      getAssetId(): number;
-
-      getBlockId(): number;
-
-      getBuyerId(): number;
-
-      getSellerId(): number;
+      isBuy(): boolean;
 
       addRemoveTradesListener(listener: com.heatledger.util.Listener<com.heatledger.Trade[]>, eventType: com.heatledger.Trade.Event): boolean;
 
       removeRemoveTradesListener(listener: com.heatledger.util.Listener<com.heatledger.Trade[]>, eventType: com.heatledger.Trade.Event): boolean;
 
       getAskOrderId(): number;
-
-      isBuy(): boolean;
 
       getBidOrderId(): number;
 
@@ -2825,13 +2839,23 @@ declare namespace Java {
 
       getAssetProperties(): string;
 
+      getCurrencyId(): number;
+
+      getAssetId(): number;
+
+      getBlockId(): number;
+
+      getBuyerId(): number;
+
+      getSellerId(): number;
+
+      getHeight(): number;
+
       getTimestamp(): number;
 
       addListener(listener: com.heatledger.util.Listener<com.heatledger.Trade>, eventType: com.heatledger.Trade.Event): boolean;
 
       removeListener(listener: com.heatledger.util.Listener<com.heatledger.Trade>, eventType: com.heatledger.Trade.Event): boolean;
-
-      getHeight(): number;
 
       toString(): string;
     }
@@ -2847,9 +2871,9 @@ declare namespace Java {
 
       getAsString(): string;
 
-      isText(): boolean;
-
       getData(): any;
+
+      isText(): boolean;
     }
 
   }
@@ -3053,178 +3077,11 @@ declare namespace Java {
 
   namespace com.heatledger.persist {
 
-    export interface PersistListener<KEY, VALUE> {
-
-      notifyRemove(key: KEY, value: VALUE): void;
-
-      notifyPut(key: KEY, value: VALUE): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
     export interface RestorableMapListener {
 
       restorableMapOnPut(key: any, value: any): void;
 
       restorableMapOnRemove(key: any): void;
-    }
-
-  }
-
-  namespace com.heatledger {
-
-    export interface BlockImpl extends com.heatledger.Block, com.heatledger.persist.Marshalable {
-      NEXT_BLOCK_ID_INDEX: number;
-      transactions: com.heatledger.TransactionImpl[];
-
-      setTransactions(blockTransactions: com.heatledger.TransactionImpl[]): void;
-
-      parseBlock(blockData: { [index: string]: any }): com.heatledger.BlockImpl;
-
-      setPrevious(block: com.heatledger.BlockImpl): void;
-
-      getGeneratorId(): number;
-
-      getTransactions(): com.heatledger.TransactionImpl[];
-
-      getJSONObject(): { [index: string]: any };
-
-      getStringId(): string;
-
-      getNextBlockId(): number;
-
-      getTotalFeeHQT(): number;
-
-      getPayloadHash(): any;
-
-      getPayloadLength(): number;
-
-      getGeneratorPublicKey(): any;
-
-      getPreviousBlockId(): number;
-
-      getPreviousBlockHash(): any;
-
-      getTotalAmountHQT(): number;
-
-      getGenerationSignature(): any;
-
-      getBlockSignature(): any;
-
-      getBaseTarget(): number;
-
-      getCumulativeDifficulty(): number;
-
-      sign(secretPhrase: string): void;
-
-      getTimestamp(): number;
-
-      getVersion(): number;
-
-      getHeight(): number;
-
-      equals(o: any): boolean;
-
-      hashCode(): number;
-
-      getBytes(): any;
-
-      write(buffer: java.nio.ByteBuffer): number;
-
-      read(buffer: java.nio.ByteBuffer): void;
-
-      getId(): number;
-
-      reset(): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface BlocksFile extends java.io.Closeable, com.heatledger.persist.Transactional {
-      blockIdMap: com.heatledger.persist.RestorableMap;
-      elementCount: number;
-      file: any;
-      isReadonly: boolean;
-      transactionIdMap: com.heatledger.persist.RestorableMap;
-
-      getTransactionIdMap(): com.heatledger.persist.RestorableMap;
-
-      getBlockIdMap(): com.heatledger.persist.RestorableMap;
-
-      getIsReadonly(): boolean;
-
-      isInTransaction(): boolean;
-
-      beginTransaction(): void;
-
-      endTransaction(): void;
-
-      rollbackTransaction(): void;
-
-      hasBlock(id: number): boolean;
-
-      hasTransaction(transactionId: number): boolean;
-
-      addBlock(block: com.heatledger.BlockImpl): void;
-
-      dumpTransactions(): void;
-
-      deleteBlocksFrom(id: number): void;
-
-      dumpBlocksRestore(): void;
-
-      updateNextBlockIdForBlock(id: number, nextBlockId: number): void;
-
-      getElementCount(): number;
-
-      createSharedIterator(index: number, length: number): java.util.Iterator<com.heatledger.BlockImpl>;
-
-      createNonSharedIterator(index: number, length: number): java.util.Iterator<com.heatledger.BlockImpl>;
-
-      createReverseNonSharedIterator(index: number, length: number): java.util.Iterator<com.heatledger.BlockImpl>;
-
-      getById(id: number, marshalable: com.heatledger.persist.Marshalable): boolean;
-
-      getBlockHeight(id: number): number;
-
-      findBlockIdAtIndex(index: number): number;
-
-      lasBlockId(): number;
-
-      oneBeforeLasBlockId(): number;
-
-      getTransactionBlockId(transactionId: number): number;
-
-      getByIndex(index: number, marshalable: com.heatledger.persist.Marshalable): boolean;
-
-      clear(): void;
-
-      push(blockId: number, marshalable: com.heatledger.persist.Marshalable, transactionIds: number[]): void;
-
-      pop(): void;
-
-      create(): void;
-
-      close(): void;
-
-      getFile(): any;
-    }
-
-  }
-
-  namespace com.heatledger.persist {
-
-    export interface OrderPairKey {
-
-      equals(o: any): boolean;
-
-      toString(): string;
-
-      hashCode(): number;
     }
 
   }
@@ -3240,25 +3097,7 @@ declare namespace Java {
       size: number;
       transaction: com.heatledger.TransactionImpl;
 
-      getArrivalTimestamp(): number;
-
-      getRecipientId(): number;
-
-      getSenderId(): number;
-
-      getPublicKeyAnnouncement(): com.heatledger.Appendix.PublicKeyAnnouncement;
-
-      getEncryptedMessage(): com.heatledger.Appendix.EncryptedMessage;
-
-      getSenderPublicKey(): any;
-
-      getBlockId(): number;
-
-      getJSONObject(): { [index: string]: any };
-
-      getStringId(): string;
-
-      getTransaction(): com.heatledger.TransactionImpl;
+      setHeight(height: number): void;
 
       getBlockTimestamp(): number;
 
@@ -3294,23 +3133,41 @@ declare namespace Java {
 
       getSafeIndex(): number;
 
-      setHeight(height: number): void;
+      getArrivalTimestamp(): number;
+
+      getTransaction(): com.heatledger.TransactionImpl;
+
+      getStringId(): string;
+
+      getRecipientId(): number;
+
+      getSenderId(): number;
+
+      getPublicKeyAnnouncement(): com.heatledger.Appendix.PublicKeyAnnouncement;
+
+      getEncryptedMessage(): com.heatledger.Appendix.EncryptedMessage;
+
+      getSenderPublicKey(): any;
+
+      getBlockId(): number;
+
+      getJSONObject(): { [index: string]: any };
 
       getIndex(): number;
 
-      getExpiration(): number;
-
       sign(secretPhrase: string): void;
 
-      getBlock(): com.heatledger.Block;
+      getHeight(): number;
+
+      getExpiration(): number;
 
       getTimestamp(): number;
 
       validate(): void;
 
-      getVersion(): number;
+      getBlock(): com.heatledger.Block;
 
-      getHeight(): number;
+      getVersion(): number;
 
       equals(o: any): boolean;
 
@@ -3335,17 +3192,184 @@ declare namespace Java {
 
   }
 
+  namespace com.heatledger.persist {
+
+    export interface PersistListener<KEY, VALUE> {
+
+      notifyRemove(key: KEY, value: VALUE): void;
+
+      notifyPut(key: KEY, value: VALUE): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface OrderPairKey {
+
+      equals(o: any): boolean;
+
+      toString(): string;
+
+      hashCode(): number;
+    }
+
+  }
+
+  namespace com.heatledger {
+
+    export interface BlockImpl extends com.heatledger.Block, com.heatledger.persist.Marshalable {
+      NEXT_BLOCK_ID_INDEX: number;
+      transactions: com.heatledger.TransactionImpl[];
+
+      setTransactions(blockTransactions: com.heatledger.TransactionImpl[]): void;
+
+      parseBlock(blockData: { [index: string]: any }): com.heatledger.BlockImpl;
+
+      setPrevious(block: com.heatledger.BlockImpl): void;
+
+      getStringId(): string;
+
+      getNextBlockId(): number;
+
+      getPayloadLength(): number;
+
+      getTotalFeeHQT(): number;
+
+      getGeneratorPublicKey(): any;
+
+      getPreviousBlockId(): number;
+
+      getPreviousBlockHash(): any;
+
+      getTotalAmountHQT(): number;
+
+      getPayloadHash(): any;
+
+      getGenerationSignature(): any;
+
+      getBlockSignature(): any;
+
+      getBaseTarget(): number;
+
+      getCumulativeDifficulty(): number;
+
+      getGeneratorId(): number;
+
+      getTransactions(): com.heatledger.TransactionImpl[];
+
+      getJSONObject(): { [index: string]: any };
+
+      sign(secretPhrase: string): void;
+
+      getHeight(): number;
+
+      getTimestamp(): number;
+
+      getVersion(): number;
+
+      equals(o: any): boolean;
+
+      hashCode(): number;
+
+      getBytes(): any;
+
+      write(buffer: java.nio.ByteBuffer): number;
+
+      read(buffer: java.nio.ByteBuffer): void;
+
+      getId(): number;
+
+      reset(): void;
+    }
+
+  }
+
+  namespace com.heatledger.persist {
+
+    export interface BlocksFile extends java.io.Closeable, com.heatledger.persist.Transactional {
+      blockIdMap: com.heatledger.persist.RestorableMap;
+      elementCount: number;
+      file: any;
+      isReadonly: boolean;
+      transactionIdMap: com.heatledger.persist.RestorableMap;
+
+      hasTransaction(transactionId: number): boolean;
+
+      addBlock(block: com.heatledger.BlockImpl): void;
+
+      dumpTransactions(): void;
+
+      deleteBlocksFrom(id: number): void;
+
+      dumpBlocksRestore(): void;
+
+      updateNextBlockIdForBlock(id: number, nextBlockId: number): void;
+
+      getElementCount(): number;
+
+      createSharedIterator(index: number, length: number): java.util.Iterator<com.heatledger.BlockImpl>;
+
+      createNonSharedIterator(index: number, length: number): java.util.Iterator<com.heatledger.BlockImpl>;
+
+      createReverseNonSharedIterator(index: number, length: number): java.util.Iterator<com.heatledger.BlockImpl>;
+
+      getById(id: number, marshalable: com.heatledger.persist.Marshalable): boolean;
+
+      getBlockHeight(id: number): number;
+
+      findBlockIdAtIndex(index: number): number;
+
+      lasBlockId(): number;
+
+      oneBeforeLasBlockId(): number;
+
+      getTransactionBlockId(transactionId: number): number;
+
+      isInTransaction(): boolean;
+
+      beginTransaction(): void;
+
+      endTransaction(): void;
+
+      rollbackTransaction(): void;
+
+      hasBlock(id: number): boolean;
+
+      getTransactionIdMap(): com.heatledger.persist.RestorableMap;
+
+      getBlockIdMap(): com.heatledger.persist.RestorableMap;
+
+      getIsReadonly(): boolean;
+
+      getByIndex(index: number, marshalable: com.heatledger.persist.Marshalable): boolean;
+
+      clear(): void;
+
+      push(blockId: number, marshalable: com.heatledger.persist.Marshalable, transactionIds: number[]): void;
+
+      pop(): void;
+
+      create(): void;
+
+      close(): void;
+
+      getFile(): any;
+    }
+
+  }
+
   namespace com.heatledger {
 
     export interface AccountPublicKey {
       keyHeight: number;
       publicKey: any;
 
-      getKeyHeight(): number;
-
       setPublicKey(publicKey: any): void;
 
       setKeyHeight(keyHeight: number): void;
+
+      getKeyHeight(): number;
 
       getPublicKey(): any;
     }
@@ -3389,15 +3413,15 @@ declare namespace Java {
       unconfirmedQuantity: number;
       virtualQuantity: number;
 
-      getAccountId(): number;
-
-      getVirtualQuantity(): number;
+      getUnconfirmedQuantity(): number;
 
       getDecimals(): number;
 
       getQuantity(): number;
 
-      getUnconfirmedQuantity(): number;
+      getAccountId(): number;
+
+      getVirtualQuantity(): number;
 
       getAssetId(): number;
 
@@ -3411,9 +3435,9 @@ declare namespace Java {
     export interface AbstractReplicator {
       id: string;
 
-      beforeFullRescan(): void;
-
       registerListeners(): void;
+
+      beforeFullRescan(): void;
 
       afterFullRescan(): void;
 
@@ -3449,13 +3473,13 @@ declare namespace Java {
       symbol: string;
       transactionId: number;
 
-      getAssetId(): number;
-
       getTransactionId(): number;
 
       getCertifierAccountId(): number;
 
       isCertified(): boolean;
+
+      getAssetId(): number;
 
       getSymbol(): string;
 
@@ -3484,11 +3508,11 @@ declare namespace Java {
       transactionId: number;
       value: string;
 
+      getTransactionId(): number;
+
       getAccountId(): number;
 
       getAssetId(): number;
-
-      getTransactionId(): number;
 
       getValue(): string;
 
@@ -3533,9 +3557,9 @@ declare namespace Java {
       transactionId: number;
       value: any;
 
-      getAccountId(): number;
-
       getTransactionId(): number;
+
+      getAccountId(): number;
 
       getName(): string;
 
@@ -3566,6 +3590,10 @@ declare namespace Java {
       hr24Low: number;
       lastPrice: number;
 
+      getAskOrderTotal(): number;
+
+      getBidOrderTotal(): number;
+
       getLastPrice(): number;
 
       getHr24Change(): number;
@@ -3582,17 +3610,13 @@ declare namespace Java {
 
       getAssetDecimals(): number;
 
-      getCurrencyId(): number;
-
-      getAssetId(): number;
-
       getCurrencyProperties(): string;
 
       getAssetProperties(): string;
 
-      getAskOrderTotal(): number;
+      getCurrencyId(): number;
 
-      getBidOrderTotal(): number;
+      getAssetId(): number;
     }
 
   }
@@ -3616,6 +3640,8 @@ declare namespace Java {
       timestamp: number;
       transaction: number;
 
+      getRecipientPublicKey(): any;
+
       getSender(): number;
 
       getRecipient(): number;
@@ -3636,13 +3662,11 @@ declare namespace Java {
 
       getMessageIsEncryptedToSelf(): boolean;
 
-      getRecipientPublicKey(): any;
+      getTransaction(): number;
 
       getSenderPublicKey(): any;
 
       getBlockId(): number;
-
-      getTransaction(): number;
 
       getTimestamp(): number;
     }
@@ -3704,6 +3728,10 @@ declare namespace Java {
       senderPublicName: string;
       timestamp: number;
 
+      getQuantity(): number;
+
+      getRecipientPublicKey(): any;
+
       getSender(): number;
 
       getRecipient(): number;
@@ -3724,17 +3752,13 @@ declare namespace Java {
 
       getMessageIsEncryptedToSelf(): boolean;
 
-      getRecipientPublicKey(): any;
-
-      getQuantity(): number;
-
       getSenderPublicKey(): any;
 
       getBlockId(): number;
 
-      getCurrency(): number;
-
       getTimestamp(): number;
+
+      getCurrency(): number;
     }
 
   }
@@ -3761,6 +3785,126 @@ declare namespace Java {
       getAccounts(assignerId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Account>;
 
       search(query: string, assignerId: number, from: number, to: number): com.heatledger.replicate.ResultSetIterator<com.heatledger.Account>;
+    }
+
+  }
+
+  namespace com.heatledger.replicate.ReplicatorScriptHelper {
+
+    export interface ScriptablePreparedStatement {
+      preparedStatement: any;
+
+      getPreparedStatement(): any;
+
+      setBytes(parameterIndex: number, x: any): void;
+
+      executeQuery(): com.heatledger.replicate.ReplicatorScriptHelper.ScriptableResultSet;
+
+      executeUpdate(): number;
+
+      setString(parameterIndex: number, x: string): void;
+
+      execute(): boolean;
+
+      setByte(parameterIndex: number, x: number): void;
+
+      setShort(parameterIndex: number, x: number): void;
+
+      setInt(parameterIndex: number, x: number): void;
+
+      setLong(parameterIndex: number, x: number): void;
+
+      setFloat(parameterIndex: number, x: number): void;
+
+      setDouble(parameterIndex: number, x: number): void;
+    }
+
+  }
+
+  namespace com.heatledger.replicate.ReplicatorScriptHelper {
+
+    export interface ScriptableResultSet {
+      closed: boolean;
+      resultSet: any;
+
+      getString(columnIndex: number): string;
+
+      getString(columnLabel: string): string;
+
+      getResultSet(): any;
+
+      isClosed(): boolean;
+
+      getBoolean(columnIndex: number): boolean;
+
+      getBoolean(columnLabel: string): boolean;
+
+      getByte(columnIndex: number): number;
+
+      getByte(columnLabel: string): number;
+
+      getShort(columnIndex: number): number;
+
+      getShort(columnLabel: string): number;
+
+      getInt(columnIndex: number): number;
+
+      getInt(columnLabel: string): number;
+
+      getLong(columnIndex: number): number;
+
+      getLong(columnLabel: string): number;
+
+      getFloat(columnLabel: string): number;
+
+      getFloat(columnIndex: number): number;
+
+      getDouble(columnLabel: string): number;
+
+      getDouble(columnIndex: number): number;
+
+      getBytes(columnIndex: number): any;
+
+      getBytes(columnLabel: string): any;
+
+      next(): boolean;
+
+      first(): boolean;
+
+      close(): void;
+
+      previous(): boolean;
+    }
+
+  }
+
+  namespace com.heatledger.replicate.TradeAPI {
+
+    export interface TradeMarketInfo {
+      assetId: number;
+      currencyId: number;
+      hr24AssetVolume: number;
+      hr24Change: number;
+      hr24High: number;
+      hr24Low: number;
+      hr24Volume: number;
+      lastPrice: number;
+
+      getHr24Volume(): number;
+
+      getLastPrice(): number;
+
+      getHr24Change(): number;
+
+      getHr24High(): number;
+
+      getHr24Low(): number;
+
+      getHr24AssetVolume(): number;
+
+      getCurrencyId(): number;
+
+      getAssetId(): number;
     }
 
   }
@@ -3814,33 +3958,63 @@ declare namespace Java {
 
   }
 
-  namespace com.heatledger.replicate.TradeAPI {
+  namespace com.heatledger {
 
-    export interface TradeMarketInfo {
-      assetId: number;
-      currencyId: number;
-      hr24AssetVolume: number;
-      hr24Change: number;
-      hr24High: number;
-      hr24Low: number;
-      hr24Volume: number;
-      lastPrice: number;
+    export interface Fee {
+      ARBITRARY_MESSAGE_FEE: com.heatledger.Fee;
+      ORDINARY_PAYMENT_FEE: com.heatledger.Fee;
+      EFFECTIVE_BALANCE_LEASING_FEE: com.heatledger.Fee;
+      ORDER_CANCELLATION_FEE: com.heatledger.Fee;
+      ORDER_PLACEMENT_FEE: com.heatledger.Fee;
+      ASSET_TRANSFER_FEE: com.heatledger.Fee;
+      ASSET_ISSUE_MORE_FEE: com.heatledger.Fee;
+      WHITELIST_ACCOUNT_FEE: com.heatledger.Fee;
+      WHITELIST_MARKET_FEE: com.heatledger.Fee;
+      ASSET_ISSUANCE_FEE: com.heatledger.Fee;
+      PRIVATE_NAME_ANNOUNCEMENT_APPENDIX_FEE: com.heatledger.Fee;
+      PRIVATE_NAME_ASSIGNEMENT_APPENDIX_FEE: com.heatledger.Fee;
+      PUBLIC_NAME_ANNOUNCEMENT_APPENDIX_FEE: com.heatledger.Fee;
+      PUBLIC_NAME_ASSIGNEMENT_APPENDIX_FEE: com.heatledger.Fee;
+      PUBLICKEY_ANNOUNCEMENT_APPENDIX_FEE: com.heatledger.Fee;
+      MESSAGE_APPENDIX_FEE: com.heatledger.Fee;
+      ENCRYPTED_MESSAGE_APPENDIX_FEE: com.heatledger.Fee;
+    }
 
-      getLastPrice(): number;
+  }
 
-      getHr24Change(): number;
+  namespace com.heatledger.Appendix {
 
-      getHr24High(): number;
+    export interface AbstractEncryptedMessage extends com.heatledger.Appendix.AbstractAppendix {
+      encryptedData: com.heatledger.crypto.EncryptedData;
+      text: boolean;
 
-      getHr24Volume(): number;
+      getEncryptedData(): com.heatledger.crypto.EncryptedData;
 
-      getHr24Low(): number;
+      getFee(): com.heatledger.Fee;
 
-      getHr24AssetVolume(): number;
+      isText(): boolean;
+    }
 
-      getCurrencyId(): number;
+  }
 
-      getAssetId(): number;
+  namespace com.heatledger.Appendix {
+
+    export interface AbstractAppendix extends com.heatledger.Appendix {
+
+      putBytes(buffer: java.nio.ByteBuffer): void;
+
+      getJSONObject(): { [index: string]: any };
+
+      getVersion(): number;
+
+      getSize(): number;
+    }
+
+  }
+
+  namespace com.heatledger.Attachment {
+
+    export interface AbstractAttachment extends com.heatledger.Appendix.AbstractAppendix, com.heatledger.Attachment {
     }
 
   }
@@ -4299,67 +4473,6 @@ declare namespace Java {
 
   }
 
-  namespace com.heatledger {
-
-    export interface Fee {
-      ARBITRARY_MESSAGE_FEE: com.heatledger.Fee;
-      ORDINARY_PAYMENT_FEE: com.heatledger.Fee;
-      EFFECTIVE_BALANCE_LEASING_FEE: com.heatledger.Fee;
-      ORDER_CANCELLATION_FEE: com.heatledger.Fee;
-      ORDER_PLACEMENT_FEE: com.heatledger.Fee;
-      ASSET_TRANSFER_FEE: com.heatledger.Fee;
-      ASSET_ISSUE_MORE_FEE: com.heatledger.Fee;
-      WHITELIST_ACCOUNT_FEE: com.heatledger.Fee;
-      WHITELIST_MARKET_FEE: com.heatledger.Fee;
-      ASSET_ISSUANCE_FEE: com.heatledger.Fee;
-      PRIVATE_NAME_ANNOUNCEMENT_APPENDIX_FEE: com.heatledger.Fee;
-      PRIVATE_NAME_ASSIGNEMENT_APPENDIX_FEE: com.heatledger.Fee;
-      PUBLIC_NAME_ANNOUNCEMENT_APPENDIX_FEE: com.heatledger.Fee;
-      PUBLIC_NAME_ASSIGNEMENT_APPENDIX_FEE: com.heatledger.Fee;
-      PUBLICKEY_ANNOUNCEMENT_APPENDIX_FEE: com.heatledger.Fee;
-      MESSAGE_APPENDIX_FEE: com.heatledger.Fee;
-      ENCRYPTED_MESSAGE_APPENDIX_FEE: com.heatledger.Fee;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface AbstractEncryptedMessage extends com.heatledger.Appendix.AbstractAppendix {
-      encryptedData: com.heatledger.crypto.EncryptedData;
-      text: boolean;
-
-      getEncryptedData(): com.heatledger.crypto.EncryptedData;
-
-      getFee(): com.heatledger.Fee;
-
-      isText(): boolean;
-    }
-
-  }
-
-  namespace com.heatledger.Appendix {
-
-    export interface AbstractAppendix extends com.heatledger.Appendix {
-
-      putBytes(buffer: java.nio.ByteBuffer): void;
-
-      getJSONObject(): { [index: string]: any };
-
-      getVersion(): number;
-
-      getSize(): number;
-    }
-
-  }
-
-  namespace com.heatledger.Attachment {
-
-    export interface AbstractAttachment extends com.heatledger.Appendix.AbstractAppendix, com.heatledger.Attachment {
-    }
-
-  }
-
   namespace java.io {
 
     export interface Writer extends java.lang.Appendable, java.io.Closeable, java.io.Flushable {
@@ -4580,6 +4693,13 @@ declare namespace Java {
 
   }
 
+  namespace com.heatledger.persist.SortedLinkedList {
+
+    export interface SortedLinkedListAbstractNode {
+    }
+
+  }
+
   namespace com.heatledger.persist {
 
     export interface PersistObservable<KEY, VALUE> {
@@ -4599,7 +4719,15 @@ declare namespace Java {
 
       dump(): void;
 
-      getChronicleMap(): { [index: string]: any };
+      getUsing(key: any, usingValue: any): any;
+
+      dumpRestore(): void;
+
+      forEachUsing(consumer: java.util._function.BiConsumer<any, any>, usingKey: any, usingValue: any): void;
+
+      forEachUsing(consumer: java.util._function.BiConsumer<any, any>): void;
+
+      setViewer(viewer: com.heatledger.persist.RestorableMapViewer): void;
 
       isInTransaction(): boolean;
 
@@ -4609,15 +4737,7 @@ declare namespace Java {
 
       rollbackTransaction(): void;
 
-      getUsing(key: any, usingValue: any): any;
-
-      dumpRestore(): void;
-
-      forEachUsing(consumer: java.util._function.BiConsumer<any, any>): void;
-
-      forEachUsing(consumer: java.util._function.BiConsumer<any, any>, usingKey: any, usingValue: any): void;
-
-      setViewer(viewer: com.heatledger.persist.RestorableMapViewer): void;
+      getChronicleMap(): { [index: string]: any };
 
       setListener(listener: com.heatledger.persist.RestorableMapListener): void;
 
@@ -4644,13 +4764,6 @@ declare namespace Java {
       containsKey(key: any): boolean;
 
       forEach(consumer: java.util._function.BiConsumer<any, any>): void;
-    }
-
-  }
-
-  namespace com.heatledger.persist.SortedLinkedList {
-
-    export interface SortedLinkedListAbstractNode {
     }
 
   }
@@ -4693,9 +4806,9 @@ declare namespace Java {
 
       getRange(): string;
 
-      getWeight(): number;
-
       mapEquivalents(arg0: java.util.Locale.LanguageRange[], arg1: { [index: string]: string[] }): java.util.Locale.LanguageRange[];
+
+      getWeight(): number;
 
       equals(arg0: any): boolean;
 
@@ -4736,13 +4849,13 @@ declare namespace Java {
 
     export interface RestorableMapViewer {
 
+      keyToString(key: any): string;
+
       valueToMap(key: any, value: any): { [index: string]: any };
 
       tracePut(key: any, value: any): void;
 
       traceRemove(key: any): void;
-
-      keyToString(key: any): string;
 
       printAll(maps: { [index: string]: any }[]): void;
     }
