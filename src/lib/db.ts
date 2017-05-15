@@ -67,7 +67,7 @@ module db {
    */
   export function iterator<T>(statement: string, 
                               setup: (pstmt: ScriptablePreparedStatement) => void,
-                              translator: (pstmt: ScriptableResultSet) => T,
+                              translator: (resultSet: ScriptableResultSet) => T,
                               consumer: (iterator: Java.java.util.Iterator<T>) => void) {
     heat.replicator.scriptHelper.resultSetIterator(statement, setup, translator, consumer);
   }
@@ -79,5 +79,13 @@ module db {
    */
   export function batch(updates: Array<string>) {
     heat.replicator.scriptHelper.batchUpdate(updates);
+  }
+
+  export function limitsClause(from: number, to: number): string {
+    return heat.replicator.scriptHelper.limitsClause(from, to);
+  }
+
+  export function setLimits(index: number, pstmt: ScriptablePreparedStatement, from: number, to: number): number {
+    return heat.replicator.scriptHelper.setLimits(index, pstmt, from, to);
   }
 }
