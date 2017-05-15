@@ -9,11 +9,12 @@ class ScriptableByteBuffer {
 
   /* Creates a new ByteBuffer */
   static create(): ScriptableByteBuffer {
-    let ByteBufferType = Java.type('java.nio.ByteBuffer');
-    let buffer = <Java.java.nio.ByteBuffer> new ByteBufferType(); 
+    let buffer = ByteBuffer.allocate(Constants.MAX_ENCRYPTED_MESSAGE_LENGTH);
     buffer.order(ByteOrder.LITTLE_ENDIAN);
     return new ScriptableByteBuffer(buffer);
   }
+
+  public toArray(): Array<number> { return this.buffer.array(); }
 
   /* byte */
   public put(value: number): ScriptableByteBuffer { this.buffer.put(value); return this; }
