@@ -174,7 +174,16 @@ gulp.task('test', ['build'], function (cb) {
   var heatbin = isWin ? "bin/heatledger.bat" : "bin/heatledger";
   var heatdir = (heatledger&&heatledger.dir) || argv.heatdir;
   var sourcedir = path.join(__dirname, 'src');
+
+  if (conf['heat.deleteHeatDb']=='true') {
+    var del = require('del');
+    del.sync([
+      path.join(heatdir, 'heat_db')
+    ], {force:true});
+  }
+
   var args = ["-path", scriptsDir, "-run", argv.run, "-sourcedir", sourcedir, "-properties", properties];
+
   var server = spawn(heatbin, args, { cwd: heatdir });
 
   function logVerbose(msg) {
