@@ -49,4 +49,10 @@ declare namespace Java {
       (arg0: T): R;
     }    
   }
+
+  namespace com.heatledger.util {
+    export interface Listener<T> {
+      (arg: T): void;
+    }
+  }  
 }
