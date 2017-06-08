@@ -2248,15 +2248,6 @@ declare namespace Java {
 
   }
 
-  namespace com.heatledger.util {
-
-    export interface Listener<T> {
-
-      notify(t: T): void;
-    }
-
-  }
-
   namespace com.heatledger {
 
     export interface Order {
