@@ -48,12 +48,12 @@ module microservice {
   /* MicroService annotation */
   export function MicroService(name: string) {
     return function (target) {
-      microservice.manager().addService(name, function () {
-        function F(args): void {
-          return target.apply(this, args);
+      microservice.manager().addService(name, function (config) {
+        function F(): void {
+          return target.call(this, config);
         }
         F.prototype = target.prototype;
-        return new F(arguments);
+        return new F();
       });
     }
   }  
@@ -87,7 +87,7 @@ module microservice {
     }    
 
     /* Create and run a service instance, called from java */
-    public runService(name: string, config: lang.IStringHashMap<any>): number {
+    public runService(name: string, config: lang.IStringHashMap<any>|string): number {
       var service = this.services[name];
       if (!service) {
         return 1;
@@ -97,8 +97,10 @@ module microservice {
     }
 
     /* Create and return a service instance */
-    public createService(name: string, config: lang.IStringHashMap<any>): any {
+    public createService(name: string, config: lang.IStringHashMap<any>|string): any {
       let service = this.services[name];
+      if (typeof config == 'string')
+        config = JSON.parse(config);
       let instance = service.factory.call(null, config);
       if (instance["__routes"]) {
         instance["__routes"].forEach(route=>{
