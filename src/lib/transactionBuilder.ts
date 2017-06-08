@@ -114,7 +114,9 @@ module transactionBuilder {
       if (util.isDefined(this._publicKeyAnnouncement)) {
         builder.publicKeyAnnouncement(this._publicKeyAnnouncement);
       }
-      return builder.build(this.secretPhrase);
+      let transaction = builder.build();
+      transaction.sign(this.secretPhrase);
+      return transaction;
     }    
 
     public broadcast(): Java.com.heatledger.Transaction {
@@ -218,7 +220,7 @@ module transactionBuilder {
       if (!util.isDefined(this._quantity)) {
         throw new Error("You did not set what quantity to transfer");
       }
-      let ColoredCoinsAssetTransfer = Java.type('com.heatledger.Attachment').ColoredCoinsAssetTransfer.ColoredCoinsAssetTransfer;
+      let ColoredCoinsAssetTransfer = Java.type('com.heatledger.Attachment').ColoredCoinsAssetTransfer;
       let attachment = new ColoredCoinsAssetTransfer(this._asset, this._quantity);
       this.attachment(attachment);
       return super.build();
@@ -248,7 +250,7 @@ module transactionBuilder {
 
     public quantity(quantity: number) {
       this._quantity = quantity;
-      return quantity;
+      return this;
     }
 
     public price(price: number) {
@@ -290,7 +292,7 @@ module transactionBuilder {
 
     public build() {
       this.verify();
-      let ColoredCoinsAskOrderPlacement = Java.type('com.heatledger.Attachment').ColoredCoinsAssetTransfer.ColoredCoinsAskOrderPlacement;
+      let ColoredCoinsAskOrderPlacement = Java.type('com.heatledger.Attachment').ColoredCoinsAskOrderPlacement;
       let attachment = new ColoredCoinsAskOrderPlacement(this._currency, this._asset, this._quantity, this._price, this._expiration);
       this.attachment(attachment);
       return super.build();      
@@ -304,7 +306,7 @@ module transactionBuilder {
 
     public build() {
       this.verify();
-      let ColoredCoinsBidOrderPlacement = Java.type('com.heatledger.Attachment').ColoredCoinsAssetTransfer.ColoredCoinsBidOrderPlacement;
+      let ColoredCoinsBidOrderPlacement = Java.type('com.heatledger.Attachment').ColoredCoinsBidOrderPlacement;
       let attachment = new ColoredCoinsBidOrderPlacement(this._currency, this._asset, this._quantity, this._price, this._expiration);
       this.attachment(attachment);
       return super.build();      
@@ -336,7 +338,7 @@ module transactionBuilder {
 
     public build() {
       this.verify();
-      let ColoredCoinsAskOrderCancellation = Java.type('com.heatledger.Attachment').ColoredCoinsAssetTransfer.ColoredCoinsAskOrderCancellation;
+      let ColoredCoinsAskOrderCancellation = Java.type('com.heatledger.Attachment').ColoredCoinsAskOrderCancellation;
       let attachment = new ColoredCoinsAskOrderCancellation(this._order);
       this.attachment(attachment);
       return super.build();      
@@ -350,7 +352,7 @@ module transactionBuilder {
 
     public build() {
       this.verify();
-      let ColoredCoinsBidOrderCancellation = Java.type('com.heatledger.Attachment').ColoredCoinsAssetTransfer.ColoredCoinsBidOrderCancellation;
+      let ColoredCoinsBidOrderCancellation = Java.type('com.heatledger.Attachment').ColoredCoinsBidOrderCancellation;
       let attachment = new ColoredCoinsBidOrderCancellation(this._order);
       this.attachment(attachment);
       return super.build();      
