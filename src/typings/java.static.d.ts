@@ -23,8 +23,14 @@
 declare var Java: any;
 declare var Packages: any;
 declare namespace Java {
+  namespace java.util {
+    export interface Timer {
+      cancel(): void;
+    }
+  }  
   namespace java.lang {
     export interface Long {
+      compare(x: number, y: number): number;
       parseUnsignedLong(s: string): number;
       parseLong(s: string): number;
       toUnsignedString(i: number): string;
@@ -142,6 +148,8 @@ declare namespace Java {
       compress(bytes: Array<number>): Array<number>;
       uncompress(bytes: Array<number>): Array<number>;
       toLiteral(array: Array<number>): string;
+      fromQNT(s: string): string;
+      toQNT(s: string): string;
     }
   }
   /* Temp measure until we get typescript-generator to list classes within interfaces */
