@@ -168,11 +168,11 @@ gulp.task('test', ['build'], function (cb) {
   var path = require('path');
   var conf = modes[argv.mode||'fake'];
   var properties = getProperties(argv.config, conf);
-  
+
   var scriptsDir = path.join(__dirname, 'dist');
   var isWin = /^win/.test(process.platform);
-  var heatbin = isWin ? "bin/heatledger.bat" : "bin/heatledger";
   var heatdir = (heatledger&&heatledger.dir) || argv.heatdir;
+  var heatbin = isWin ? heatdir + "/bin/heatledger.bat" : "bin/heatledger";
   var sourcedir = path.join(__dirname, 'src');
 
   if (conf['heat.deleteHeatDb']=='true') {
