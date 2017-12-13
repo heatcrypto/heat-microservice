@@ -31,6 +31,8 @@ declare namespace integrations.telegram {
 module integrations.telegram {
 
     let updatePosition: number = 0;
+    let inhibitor: number = 0;
+    let skipCount: number = 0;
 
     export class TelegramHook {
 
@@ -45,12 +47,33 @@ module integrations.telegram {
         }
 
         public getTelegramUpdates() {
+            // retard the requests to telegram service while the chat silent
+            if (skipCount > 0) {
+                skipCount--;
+                return null;
+            } else {
+                if (inhibitor > 100500)
+                    inhibitor = 0;
+                if (inhibitor > 100)
+                    skipCount = 3;
+                else if (inhibitor > 30)
+                    skipCount = 2;
+                else if (inhibitor > 10)
+                    skipCount = 1;
+            }
+
             let client = heat.createHTTPClient();
             let response = client.get(`https://api.telegram.org/bot${this.botToken}/getUpdates?offset=${updatePosition + 1}`);
             let payload = JSON.parse(response);
             for (let update of payload.result) {
                 if (update.update_id > updatePosition)
                     updatePosition = update.update_id;
+            }
+            if (payload.result && payload.result.length > 0) {
+                console.log("Telegram updates: " + JSON.stringify(payload));
+                inhibitor = 0;
+            } else {
+                inhibitor++;
             }
             return payload;
         }
