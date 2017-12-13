@@ -30,6 +30,8 @@ find the bot HeatBot (username heat_blockchain_bot)
 send command to bot
 /register anyword
 
+or create the new bot. Bot must be configured "/setprivacy=DISABLED" to be able to receive users messages in the groups
+
 in Heat
 
 send not encrypted message to self:
@@ -196,6 +198,9 @@ module microservice.telegram {
             if (text.length > 4096)
                 return "Username and or message too long";
 
+            this.notifyWebsocketListeners({username: payload.username, text: text});
+            //this.notifyWebsocketListeners({username: "", text: text});
+
             return this.telegramHook.sendToTelegram(this.config.groupChatId, text);
         }
 
@@ -284,7 +289,8 @@ module microservice.telegram {
 
         private getTelegramUpdates() {
             let payload = this.telegramHook.getTelegramUpdates();
-
+            if (!payload)
+                return;
             for (let update of payload.result) {
                 let message = update.message ? update.message : (update.edited_message ? update.edited_message : null);
                 if (message) {
