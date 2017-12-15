@@ -198,8 +198,7 @@ module microservice.telegram {
             if (text.length > 4096)
                 return "Username and or message too long";
 
-            this.notifyWebsocketListeners({username: payload.username, text: text});
-            //this.notifyWebsocketListeners({username: "", text: text});
+            this.notifyWebsocketListeners({username: payload.username, text: payload.message});
 
             return this.telegramHook.sendToTelegram(this.config.groupChatId, text);
         }
@@ -309,7 +308,7 @@ module microservice.telegram {
         private handleTelegramGroupMessage(message) {
             let tm: TelegramMessage = {
                 username: message.from.first_name + (message.from.last_name ? " " + message.from.last_name : ""),
-                text: message.text
+                text: message.forward_from ? `(forwarded from ${message.forward_from.first_name}) ${message.text}` : message.text
             };
             this.messages.push(tm);
             if (this.messages.length > this.MAX_MESSAGES)
