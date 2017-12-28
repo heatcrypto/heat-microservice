@@ -87,6 +87,7 @@ declare namespace microservice.telegram {
     interface TelegramServiceConfig {
         botToken: string;
         groupChatId: number;
+        telegramPropertiesFile: string;
         //account: number;
     }
 
@@ -143,7 +144,7 @@ module microservice.telegram {
 
             this.properties = new Properties();
 
-            this.propsFile = new File("./microservice.telegram.properties");
+            this.propsFile = new File(config.telegramPropertiesFile);
             if (this.propsFile.exists()) {
                 let ins = new FileInputStream(this.propsFile);
                 this.properties.load(ins);
@@ -194,11 +195,11 @@ module microservice.telegram {
                 console.log("Could not verify signature");
                 return null;
             }
-            let text = `*${payload.username} [${account}]* says: ${payload.message}`;
+            let text = `*${payload.username} | ${account}*: ${payload.message}`;
             if (text.length > 4096)
                 return "Username and or message too long";
 
-            this.notifyWebsocketListeners({username: payload.username, text: payload.message});
+            /* this.notifyWebsocketListeners({username: payload.username, text: payload.message}); */
 
             return this.telegramHook.sendToTelegram(this.config.groupChatId, text);
         }
