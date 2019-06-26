@@ -1,3 +1,5 @@
+# IMPORTANT.. This Project Is going through a RE-DESIGN consider current version as OBSOLETE
+
 <b>Note! `subscriber.onComplete` method is not yet functional, all other parts are working, Please use `subscriber.onAdd` until further notice.</b>
 
 # Heat Developer Kit (HDK)
