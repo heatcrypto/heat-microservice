@@ -32,6 +32,10 @@ module subscriber {
   class Subscriber {
     constructor(private serviceId: string) { }
 
+    public transaction() {
+      return new TransactionSubscriberBuilder(this.serviceId);
+    }
+
     public payment() {
       return new PaymentSubscriberBuilder(this.serviceId);
     }
@@ -123,7 +127,7 @@ module subscriber {
         unsubscribe.push(this.subscribeConfirmed());
       }
       if (util.isDefined(this._onAdd) || util.isDefined(this._onRemove)) {
-        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, 
+        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender,
             this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
       }
       return () => unsubscribe.forEach((fn) => { fn() });
@@ -163,7 +167,14 @@ module subscriber {
     }
   }
 
-  abstract class TransactionSubscriberBuilder extends TransactionNoRecipientSubscriberBuilder {
+  /**
+   * All transaction types subscriber
+   */
+  class TransactionSubscriberBuilder extends TransactionNoRecipientSubscriberBuilder {
+
+    constructor(id) {
+      super(id)
+    }
 
     public account(account: number) {
       this._account = account;
@@ -174,6 +185,13 @@ module subscriber {
       this._recipient = recipient;
       return this;
     }
+
+    public subscribe() {
+      this.type(-1);
+      this.subtype(-1);
+      return super.subscribe();
+    }
+
   }
 
   class PaymentSubscriberBuilder extends TransactionSubscriberBuilder {
@@ -229,12 +247,12 @@ module subscriber {
       this._account = account;
       return this;
     }
-    
+
     public currency(currency: number) {
       this._currency = currency;
       return this;
     }
-    
+
     public asset(asset: number) {
       this._asset = asset;
       return this;
