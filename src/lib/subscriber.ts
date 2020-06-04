@@ -388,7 +388,7 @@ module subscriber {
     }
 
     public subscribe() {
-      return heat.events.subscribeBlock(this._generator, this._onPop, this._onPush);
+      return heat.events.subscribeBlock(this._generator, this._onPush, this._onPop);
     }
   }
 }
