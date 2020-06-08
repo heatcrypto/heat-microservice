@@ -147,14 +147,15 @@ module subscriber {
           this._onConfirmed(event);
         };
 
-        /* Register a listener for when the number of confirmations is reached */
-        heat.transactionStore.registerConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
+        /* Register a listener for time when the number of confirmations is reached */
+        let reference = heat.transactionStore.registerConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
         unsubscribe.push(() => {
-          heat.transactionStore.unRegisterConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
+          heat.transactionStore.unRegisterConfirmedListener(reference);
         });
       };
       unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype,
           this._account, this._sender, this._recipient, this._unconfirmed, add, null));
+
       return () => unsubscribe.forEach((fn) => { fn() });
     }
 
