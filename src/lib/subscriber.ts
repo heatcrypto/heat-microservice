@@ -122,36 +122,27 @@ module subscriber {
       var unsubscribe: Array<Java.java.lang.Runnable> = [];
       if (util.isDefined(this._onConfirmed)) {
         if (!util.isDefined(this._confirmations)) {
-          throw new Error("You must set 'confirmations' on a builder when using 'onComplete'");
+          throw new Error("You must set 'confirmations' on a builder when using 'onConfirmed'");
         }
         unsubscribe.push(this.subscribeConfirmed());
       }
       if (util.isDefined(this._onAdd) || util.isDefined(this._onRemove)) {
-        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender,
-            this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
+        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype,
+            this._account, this._sender, this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
       }
       return () => unsubscribe.forEach((fn) => { fn() });
     }
 
     private subscribeConfirmed(): Java.java.lang.Runnable {
-      var unsubscribe: Array<Java.java.lang.Runnable> = [];
-      var add = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
-
+      let unsubscribe: Array<Java.java.lang.Runnable> = [];
+      let add = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
         /* Always call addTransaction, if already added this operation does nothing */
         heat.transactionStore.addTransaction(this.serviceId, event.transaction);
-
         /* Determine if this invocation was completed already, if so exit */
-        if (heat.transactionStore.getEntryValue(this.serviceId, event.transaction.id, COMPLETE) == TRUE) {
-          return;
-        }
-
-        var onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
-
+        if (this.isComplete(event.transaction.id)) return;
+        let onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
           /* Determine if this invocation was completed already, if so exit */
-          if (heat.transactionStore.getEntryValue(this.serviceId, event.transaction.id, COMPLETE) == TRUE) {
-            return;
-          }
-
+          if (this.isComplete(event.transaction.id)) return;
           /* Call the onConfirmed handler */
           this._onConfirmed(event);
         };
@@ -162,9 +153,15 @@ module subscriber {
           heat.transactionStore.unRegisterConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
         });
       };
-      unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, this._recipient, this._unconfirmed, add, null));
+      unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype,
+          this._account, this._sender, this._recipient, this._unconfirmed, add, null));
       return () => unsubscribe.forEach((fn) => { fn() });
     }
+
+    private isComplete(transactionId) {
+      return heat.transactionStore.getEntryValue(this.serviceId, transactionId, COMPLETE) == TRUE
+    }
+
   }
 
   /**
