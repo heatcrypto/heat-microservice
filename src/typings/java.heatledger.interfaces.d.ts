@@ -554,7 +554,9 @@ declare namespace Java {
       /**
        * Returns reference to the listener in the server that should be used to unregister listener in the server
        */
-      registerConfirmedListener(transactionId: number, confirmations: number, listener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>): string;
+      registerConfirmedListener(serviceId: string, transactionId: number, confirmations: number,
+                                onConfirmedlistener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>,
+                                onCompleteListener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>): string;
 
       unRegisterConfirmedListener(listenerReference: string): void;
 

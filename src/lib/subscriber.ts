@@ -69,6 +69,7 @@ module subscriber {
     private _onAdd: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _onRemove: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _onConfirmed: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
+    private _onComplete: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _unconfirmed: boolean = false;
     private _confirmations: number;
     private _type: number;
@@ -98,6 +99,11 @@ module subscriber {
       return this;
     }
 
+    public onComplete(onComplete: (event: Java.com.heatledger.scripting.NativeTransactionEvent) => void) {
+      this._onComplete = onComplete;
+      return this;
+    }
+
     public unconfirmed(unconfirmed: boolean) {
       this._unconfirmed = unconfirmed;
       return this;
@@ -120,7 +126,7 @@ module subscriber {
 
     public subscribe() {
       var unsubscribe: Array<Java.java.lang.Runnable> = [];
-      if (util.isDefined(this._onConfirmed)) {
+      if (util.isDefined(this._onConfirmed) || util.isDefined(this._onComplete)) {
         if (!util.isDefined(this._confirmations)) {
           throw new Error("You must set 'confirmations' on a builder when using 'onConfirmed'");
         }
@@ -140,15 +146,20 @@ module subscriber {
         heat.transactionStore.addTransaction(this.serviceId, event.transaction);
         /* Determine if this invocation was completed already, if so exit */
         if (this.isComplete(event.transaction.id)) return;
-        let onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
-          /* Determine if this invocation was completed already, if so exit */
-          if (this.isComplete(event.transaction.id)) return;
-          /* Call the onConfirmed handler */
-          this._onConfirmed(event);
-        };
+        let onConfirmed;
+        if (this._onConfirmed) {
+          onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
+            /* Determine if this invocation was completed already, if so exit */
+            if (this.isComplete(event.transaction.id)) return;
+            /* Call the onConfirmed handler */
+            this._onConfirmed(event);
+          };
+        }
 
         /* Register a listener for time when the number of confirmations is reached */
-        let reference = heat.transactionStore.registerConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
+        let reference = heat.transactionStore.registerConfirmedListener(
+            this.serviceId, event.transaction.id, this._confirmations, onConfirmed, this._onComplete
+        );
         unsubscribe.push(() => {
           heat.transactionStore.unRegisterConfirmedListener(reference);
         });
