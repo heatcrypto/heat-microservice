@@ -1,5 +1,3 @@
-<b>Note! `subscriber.onComplete` method is not yet functional, all other parts are working, Please use `subscriber.onAdd` until further notice.</b>
-
 # Heat Developer Kit (HDK)
 
 Built real-time blockchain applications (microservices) on HEAT with the HDK.
@@ -420,6 +418,10 @@ One piece of data in the `TransactionStore` is important and automatically handl
 The subscriber mechanism will always make sure your `onConfirmed` listener only executes once, no matter if the code in `onConfirmed` is successfull or if it crashes, 
 __before its invoked__ it will already be marked **COMPLETE**. If you want to override this behavior and determine yourself if the transaction is **COMPLETE** or that 
 you wish to process the transaction again on a rescan. You must set COMPLETE=FALSE in the `TransactionStore` to have it processed again the next time.
+So the sequence of calls is as follows:
+1) marked **COMPLETE** (server does) 
+2) `onComplete` (microservice does)
+3) `onConfirmed` (microservice does)
 
 Example of setting **COMPLETE** marker for transactions with id `event.transaction.id` to false. Note that if you do this the subscriber mechanism will fire
 `onComplete` again the next time it 'sees' your transaction.
