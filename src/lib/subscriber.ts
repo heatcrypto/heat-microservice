@@ -145,20 +145,10 @@ module subscriber {
         /* Always call addTransaction, if already added this operation does nothing */
         heat.transactionStore.addTransaction(this.serviceId, event.transaction);
         /* Determine if this invocation was completed already, if so exit */
-        if (this.isComplete(event.transaction.id)) return;
-        let onConfirmed;
-        if (this._onConfirmed) {
-          onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
-            /* Determine if this invocation was completed already, if so exit */
-            if (this.isComplete(event.transaction.id)) return;
-            /* Call the onConfirmed handler */
-            this._onConfirmed(event);
-          };
-        }
-
+        if (heat.transactionStore.isComplete(this.serviceId, event.transaction.id)) return;
         /* Register a listener for time when the number of confirmations is reached */
         let reference = heat.transactionStore.registerConfirmedListener(
-            this.serviceId, event.transaction.id, this._confirmations, onConfirmed, this._onComplete
+            this.serviceId, event.transaction.id, this._confirmations, this._onConfirmed, this._onComplete
         );
         unsubscribe.push(() => {
           heat.transactionStore.unRegisterConfirmedListener(reference);
@@ -168,10 +158,6 @@ module subscriber {
           this._account, this._sender, this._recipient, this._unconfirmed, add, null));
 
       return () => unsubscribe.forEach((fn) => { fn() });
-    }
-
-    private isComplete(transactionId) {
-      return heat.transactionStore.getEntryValue(this.serviceId, transactionId, COMPLETE) == TRUE
     }
 
   }
