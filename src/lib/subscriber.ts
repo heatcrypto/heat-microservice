@@ -32,6 +32,10 @@ module subscriber {
   class Subscriber {
     constructor(private serviceId: string) { }
 
+    public transaction() {
+      return new TransactionSubscriberBuilder(this.serviceId);
+    }
+
     public payment() {
       return new PaymentSubscriberBuilder(this.serviceId);
     }
@@ -65,6 +69,7 @@ module subscriber {
     private _onAdd: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _onRemove: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _onConfirmed: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
+    private _onComplete: Java.java.util._function.Consumer<Java.com.heatledger.scripting.NativeTransactionEvent> = null;
     private _unconfirmed: boolean = false;
     private _confirmations: number;
     private _type: number;
@@ -94,6 +99,11 @@ module subscriber {
       return this;
     }
 
+    public onComplete(onComplete: (event: Java.com.heatledger.scripting.NativeTransactionEvent) => void) {
+      this._onComplete = onComplete;
+      return this;
+    }
+
     public unconfirmed(unconfirmed: boolean) {
       this._unconfirmed = unconfirmed;
       return this;
@@ -116,54 +126,50 @@ module subscriber {
 
     public subscribe() {
       var unsubscribe: Array<Java.java.lang.Runnable> = [];
-      if (util.isDefined(this._onConfirmed)) {
+      if (util.isDefined(this._onConfirmed) || util.isDefined(this._onComplete)) {
         if (!util.isDefined(this._confirmations)) {
-          throw new Error("You must set 'confirmations' on a builder when using 'onComplete'");
+          throw new Error("You must set 'confirmations' on a builder when using 'onConfirmed'");
         }
         unsubscribe.push(this.subscribeConfirmed());
       }
       if (util.isDefined(this._onAdd) || util.isDefined(this._onRemove)) {
-        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, 
-            this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
+        unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype,
+            this._account, this._sender, this._recipient, this._unconfirmed, this._onAdd, this._onRemove));
       }
       return () => unsubscribe.forEach((fn) => { fn() });
     }
 
     private subscribeConfirmed(): Java.java.lang.Runnable {
-      var unsubscribe: Array<Java.java.lang.Runnable> = [];
-      var add = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
-
+      let unsubscribe: Array<Java.java.lang.Runnable> = [];
+      let add = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
         /* Always call addTransaction, if already added this operation does nothing */
         heat.transactionStore.addTransaction(this.serviceId, event.transaction);
-
         /* Determine if this invocation was completed already, if so exit */
-        if (heat.transactionStore.getEntryValue(this.serviceId, event.transaction.id, COMPLETE) == TRUE) {
-          return;
-        }
-
-        var onConfirmed = (event: Java.com.heatledger.scripting.NativeTransactionEvent) => {
-
-          /* Determine if this invocation was completed already, if so exit */
-          if (heat.transactionStore.getEntryValue(this.serviceId, event.transaction.id, COMPLETE) == TRUE) {
-            return;
-          }
-
-          /* Call the onConfirmed handler */
-          this._onConfirmed(event);
-        };
-
-        /* Register a listener for when the number of confirmations is reached */
-        heat.transactionStore.registerConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
+        if (heat.transactionStore.isComplete(this.serviceId, event.transaction.id)) return;
+        /* Register a listener for time when the number of confirmations is reached */
+        let reference = heat.transactionStore.registerConfirmedListener(
+            this.serviceId, event.transaction.id, this._confirmations, this._onConfirmed, this._onComplete
+        );
         unsubscribe.push(() => {
-          heat.transactionStore.unRegisterConfirmedListener(event.transaction.id, this._confirmations, onConfirmed);
+          heat.transactionStore.unRegisterConfirmedListener(reference);
         });
       };
-      unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype, this._account, this._sender, this._recipient, this._unconfirmed, add, null));
+      unsubscribe.push(heat.events.subscribeTransaction(this._type, this._subtype,
+          this._account, this._sender, this._recipient, this._unconfirmed, add, null));
+
       return () => unsubscribe.forEach((fn) => { fn() });
     }
+
   }
 
-  abstract class TransactionSubscriberBuilder extends TransactionNoRecipientSubscriberBuilder {
+  /**
+   * All transaction types subscriber
+   */
+  class TransactionSubscriberBuilder extends TransactionNoRecipientSubscriberBuilder {
+
+    constructor(id) {
+      super(id)
+    }
 
     public account(account: number) {
       this._account = account;
@@ -174,6 +180,13 @@ module subscriber {
       this._recipient = recipient;
       return this;
     }
+
+    public subscribe() {
+      this.type(-1);
+      this.subtype(-1);
+      return super.subscribe();
+    }
+
   }
 
   class PaymentSubscriberBuilder extends TransactionSubscriberBuilder {
@@ -229,12 +242,12 @@ module subscriber {
       this._account = account;
       return this;
     }
-    
+
     public currency(currency: number) {
       this._currency = currency;
       return this;
     }
-    
+
     public asset(asset: number) {
       this._asset = asset;
       return this;
@@ -370,7 +383,7 @@ module subscriber {
     }
 
     public subscribe() {
-      return heat.events.subscribeBlock(this._generator, this._onPop, this._onPush);
+      return heat.events.subscribeBlock(this._generator, this._onPush, this._onPop);
     }
   }
 }

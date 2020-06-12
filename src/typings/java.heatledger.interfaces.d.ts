@@ -549,11 +549,18 @@ declare namespace Java {
 
       setEntryValue(serviceId: string, transactionId: number, entryName: string, entryValue: string): void;
 
+      isComplete(serviceId: string, transactionId: number): boolean;
+
       removeTransaction(serviceId: string, transaction: com.heatledger.Transaction): void;
 
-      registerConfirmedListener(transactionId: number, confirmations: number, listener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>): void;
+      /**
+       * Returns reference to the listener in the server that should be used to unregister listener in the server
+       */
+      registerConfirmedListener(serviceId: string, transactionId: number, confirmations: number,
+                                onConfirmedlistener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>,
+                                onCompleteListener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>): number;
 
-      unRegisterConfirmedListener(transactionId: number, confirmations: number, listener: java.util._function.Consumer<com.heatledger.scripting.NativeTransactionEvent>): void;
+      unRegisterConfirmedListener(listenerReference: number): void;
 
       getEntryValue(serviceId: string, transactionId: number, entryName: string): string;
 
