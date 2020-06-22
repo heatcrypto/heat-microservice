@@ -1,6 +1,6 @@
 # Heat Developer Kit (HDK)
 
-Built real-time blockchain applications (microservices) on HEAT with the HDK.
+Build real-time blockchain applications (microservices) on HEAT with the HDK.
 
 Write your blockchain applications in developer friendly TypeScript, add them to your local HEAT server `scripts` 
 folder and expose your real time application to the world.
@@ -851,6 +851,4 @@ Lets see if we can test this code and see if it runs. The `microservice.shop` te
 
 ![Run shop test](http://i.imgur.com/Y3MD3s2.gif)
 
-## And...
-
-There is quite a lot more to describe but we'll leave that for when we launch on main net.
+## That's all folks.
